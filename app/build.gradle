@@ -75,3 +75,15 @@ tasks.named('test') {
     // Use junit platform for unit tests.
     useJUnitPlatform()
 }
+
+run {
+  if(project.hasProperty('arg')){
+    args(arg.split(','))
+  }
+  main = "minecraft_java.App"
+  classpath = sourceSets.main.runtimeClasspath
+  jvmArgs = [
+    "-XstartOnFirstThread"
+  ]
+  systemProperties System.getProperties()
+}
