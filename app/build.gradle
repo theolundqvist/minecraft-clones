@@ -80,10 +80,11 @@ run {
   if(project.hasProperty('arg')){
     args(arg.split(','))
   }
+  String arg0 = (lwjglNatives == "natives-macos") ? "-XstartOnFirstThread" : "";
   main = "minecraft_java.App"
   classpath = sourceSets.main.runtimeClasspath
   jvmArgs = [
-    "-XstartOnFirstThread"
+    arg0,
   ]
   systemProperties System.getProperties()
 }
