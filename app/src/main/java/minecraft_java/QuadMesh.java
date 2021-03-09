@@ -4,10 +4,10 @@ import static org.lwjgl.opengl.GL11.*;
 
 import org.joml.Vector3f;
 
-public class QuadData {
+public class QuadMesh {
     public float[][] vertexData = new float[4][3];
 
-    public QuadData(Vector3f pos, Vector3f dir){
+    public QuadMesh(Vector3f pos, Vector3f dir){
         calculateCorners(pos, dir);
     }
 
