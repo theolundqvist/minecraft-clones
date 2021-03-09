@@ -1,4 +1,3 @@
-
 package minecraft_java;
 
 import static org.lwjgl.glfw.GLFW.*;
