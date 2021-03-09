@@ -27,7 +27,9 @@ public class World {
         this.size = size;
     }
 
-
+    public Chunk getChunk(Key k){
+        return worldMap.get(k);
+    }
 
 
     private static class Key{

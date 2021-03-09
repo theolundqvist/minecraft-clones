@@ -8,10 +8,10 @@ public class Chunk {
         this.blocks = blocks;
     }
     
-        public Chunk(int[][][] blocks, int chunkSize) {
-            this.blocks = blocks;
-            this.chunkSize = chunkSize;
-        }
+    public Chunk(int[][][] blocks, int chunkSize) {
+        this.blocks = blocks;
+        this.chunkSize = chunkSize;
+    }
 
     public int[][][] getBlocks() {
         return this.blocks;
@@ -20,8 +20,4 @@ public class Chunk {
     public void setBlocks(int[][][] blocks) {
         this.blocks = blocks;
     }
-
-
-
-
 }
