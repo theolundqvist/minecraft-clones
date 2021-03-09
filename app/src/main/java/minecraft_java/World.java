@@ -35,6 +35,7 @@ public class World {
     private static class Key{
         private int x;
         private int y;
+        
 
         public Key(int x, int y){
             this.x = x;
@@ -44,8 +45,13 @@ public class World {
         public boolean equals(Key k){
             return (x == k.x && y == k.y);
         }
+        @Override
+        public int hashCode() {
+            return (x*12)+(y*15);
+        }
 
-        public String ToString(){
+        @Override
+        public String toString(){
             return ("(" + x + ", " + y + ")");
         } 
     }

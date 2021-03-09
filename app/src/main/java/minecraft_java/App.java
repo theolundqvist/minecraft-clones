@@ -70,7 +70,7 @@ public class App {
 		glColor3f(0, 1, 1);
 		glVertex3fv(mid.get(fb));
 		glVertex3fv(corner.add(mid).get(fb));
-
+		
 		for (int i = 0; i < 4; i++) {
 			//glVertex3fv(corner.sub(mid) //ta bort sub mid
 			//.rotateAxis((float) Math.PI / 2, dir.x, dir.y, dir.z)
