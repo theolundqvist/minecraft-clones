@@ -17,19 +17,24 @@ public class World {
         return loadedChunks.get(k);
     }
 
-    public Key getPlayerChunk(Player p){
+    private Key oldPlayerChunk;
+    public void updateChunks(Player p){
+        Key playerChunk = getPlayerChunk(p);
+        if(!oldPlayerChunk.equals(playerChunk)){
+            oldPlayerChunk = playerChunk;
+            loadNewChunks();
+        }
+    }
+
+    private Key getPlayerChunk(Player p){
         return new Key((int) p.getPos().x/chunkSize, (int) p.getPos().z/chunkSize);
     }
 
-    public void load(Key k){
-        HashMap<Key, Chunk> temp = new HashMap<>();
-        for (int i = -loadChunks; i <= loadChunks; i++) {
-            for (int j = -loadChunks; j <= loadChunks; j++) {
-                k = new Key(k.x += i, k.z += j);
-                temp.put(k, getChunk(k));
-            }
-        }
-        loadedChunks = temp;
+    private void loadNewChunks(){
+
+
+        //om new Key inte existerar put(new chunk)
+
     }
     
     private static class Key{
@@ -56,7 +61,7 @@ public class World {
 
         @Override
         public String toString(){
-            return ("(" + x + ", " + y + ")");
+            return ("(" + x + ", " + z + ")");
         } 
     }
 
