@@ -3,19 +3,25 @@ package minecraft_java;
 import java.util.HashMap;
 
 
-public final class World {
+public class World {
     private HashMap<Key, Chunk> loadedChunks;
     private HashMap<Key, Chunk> unloadedChunks;
-    private final int chunkSize;
-    private final int chunkHeight = 64;
+    private int chunkSize;
+    private int chunkHeight = 64;
     private int renderDistance = 1;
 
     public World(int chunkSize) {
         this.chunkSize = chunkSize;
+        loadedChunks = new HashMap<>();
+        unloadedChunks = new HashMap<>();
     }
 
     public Chunk getChunk(Key k){
         return loadedChunks.get(k);
+    }
+
+    public void draw(){
+        loadedChunks.values().forEach((Chunk c) -> c.draw());
     }
 
     private Key oldPlayerChunk;
@@ -39,7 +45,13 @@ public final class World {
             for (int j = -renderDistance; j <= renderDistance; j++) {
                 k = new Key(k.x += i, k.z += j);
                 if (!(loadedChunks.containsKey(k))){
-                    loadedChunks.put(k, getChunk(k));
+                    if(unloadedChunks.containsKey(k)){
+                        loadedChunks.put(k, unloadedChunks.get(k));
+                        unloadedChunks.remove(k);
+                    }
+                    else{
+                        loadedChunks.put(k, TerrainGenerator.generateChunkBlocks(k, chunkSize, chunkHeight));
+                    }
                 } else {
                     toUnload.remove(k);
                 }

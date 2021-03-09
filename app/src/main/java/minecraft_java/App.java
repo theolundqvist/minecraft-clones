@@ -27,15 +27,41 @@ public class App {
 
 	static double[][] heightMap = new double[20][20];
 
-	private static void draw(){
-		
+	private static World world;
+	private static Player player;
 
-		for (int x = 0; x < heightMap.length; x++) {
-			for (int z = 0; z < heightMap[x].length; z++) {	
-				float height = (float)heightMap[x][z];
-				drawBlock(x, (int)height, z, new Vector3f(height/10, height/10, height/10));
-			}
-		}
+	private static void start() {
+
+		world = new World(16);
+		player = new Player();
+
+		// for (int i = 0; i < heightMap.length; i++) {
+		// 	for (int j = 0; j < heightMap[i].length; j++) {
+		// 		heightMap[i][j] = TerrainGenerator.getBlockHeight(i, j);
+		// 		// heightMap[i][j] = Math.random() * 5;
+		// 	}
+		// }
+
+	}
+
+	private static void draw(){
+
+		player.setPos(player.getPos().add(new Vector3f(0.1f,0,0)));
+		world.draw();
+		// float low = TerrainGenerator.lowestValue;
+		// float amp = TerrainGenerator.amplitude*2;
+
+		// for (int x = 0; x < heightMap.length; x++) {
+		// 	for (int z = 0; z < heightMap[x].length; z++) {	
+
+		// 		float height = (float)heightMap[x][z];
+
+		// 		float c = (height-low)/amp;
+
+		// 		drawBlock(x, (int)height, z, 
+		// 		new Vector3f(c,c,c));
+		// 	}
+		// }
 		//printFPS();
 	}
 
@@ -68,18 +94,7 @@ public class App {
 	}
 
 
-	private static void start(){
 
-		for (int i = 0; i < heightMap.length; i++) {
-			for (int j = 0; j < heightMap[i].length; j++) {
-				heightMap[i][j] = TerrainGenerator.getBlockHeight(i, j);
-				//heightMap[i][j] = Math.random() * 5;
-			}
-		}
-
-
-
-	}
 
 	static void setupCameraControls() {
 		glfwSetFramebufferSizeCallback(window, (win, w, h) -> {

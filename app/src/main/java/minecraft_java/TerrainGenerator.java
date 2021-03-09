@@ -5,8 +5,8 @@ public final class TerrainGenerator {
     
     static float scaleX = 0.1f;
     static float scaleY = 0.1f;
-    static float amplitude = 5f;
-    static float lowestValue = 0;
+    public static float amplitude = 5f;
+    public static float lowestValue = 0;
 
     public static double getBlockHeight(int x, int z){
         return amplitude * SimplexNoise.noise((double) x * scaleX, (double) z * scaleY) + amplitude + lowestValue;
@@ -26,12 +26,14 @@ public final class TerrainGenerator {
         return heightMap;
     }
 
-    public static int[][][] generateChunkBlocks(Key k, int chunkSize, int chunkHeight){
+    public static Chunk generateChunkBlocks(Key k, int chunkSize, int chunkHeight){
+
+        lowestValue = chunkHeight - amplitude;
 
         int[][] heightMap = generateChunkHeightMap(k, chunkSize);
         int[][][] blocks = new int[chunkSize][chunkSize][chunkHeight];
 
-
+        return new Chunk(blocks);
 
     }
 

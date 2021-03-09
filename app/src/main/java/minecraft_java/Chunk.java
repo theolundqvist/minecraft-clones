@@ -2,6 +2,8 @@ package minecraft_java;
 
 import java.util.ArrayList;
 
+import org.joml.Vector3f;
+
 public class Chunk {
     private int[][][] blocks;
     private ArrayList<QuadMesh> meshData;
@@ -13,10 +15,11 @@ public class Chunk {
     private void updateMesh(){
         meshData = MeshEngine.createMesh(this);
     }
-    
-    public Chunk(int[][][] blocks, int chunkSize) {
-        setBlocks(blocks);
-        this.chunkSize = chunkSize;
+
+    public void draw(){
+        for (QuadMesh q : meshData) {
+            q.draw(new Vector3f(0.5f,0.5f,0.5f));
+        }
     }
 
     public int[][][] getBlocks() {

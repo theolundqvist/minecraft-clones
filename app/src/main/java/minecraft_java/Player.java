@@ -17,8 +17,8 @@ public class Player {
         return pos;
     }
 
-    public void setPos(Player p, Vector3f c){
-        p.pos = c;
+    public void setPos(Vector3f c){
+        pos = c;
     }
 
 
