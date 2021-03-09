@@ -7,63 +7,51 @@ public class World {
     private HashMap<Key, Chunk> loadedChunks;
     private HashMap<Key, Chunk> unloadedChunks;
     private final int chunkSize;
+    private int loadChunks = 1;
 
-<<<<<<< HEAD
-
-    public World() {
-    }
-
-    public World(int size) {
-        this.size = size;
-    }
-
-    public HashMap<Key,Chunk> getWorldMap() {
-        return this.worldMap;
-    }
-
-    public void setWorldMap(HashMap<Key,Chunk> worldMap) {
-        this.worldMap = worldMap;
-    }
-
-    public int getSize() {
-        return this.size;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
-=======
     public World(int chunkSize) {
         this.chunkSize = chunkSize;
->>>>>>> main
     }
 
     public Chunk getChunk(Key k){
         return loadedChunks.get(k);
     }
 
+    public Key getPlayerChunk(Player p){
+        return new Key((int) p.getPos().x/chunkSize, (int) p.getPos().z/chunkSize);
+    }
+
+    public void load(Key k){
+        HashMap<Key, Chunk> temp = new HashMap<>();
+        for (int i = -loadChunks; i <= loadChunks; i++) {
+            for (int j = -loadChunks; j <= loadChunks; j++) {
+                k = new Key(k.x += i, k.z += j);
+                temp.put(k, getChunk(k));
+            }
+        }
+        loadedChunks = temp;
+    }
     
-
-
     private static class Key{
         private int x;
-        private int y;
+        private int z;
 
-        public Key(int x, int y){
+        public Key(int x, int z){
             this.x = x;
-            this.y = y;
+            this.z = z;
         }
         
         @Override
         public boolean equals(Object o){
             if(o instanceof Key){
                 Key k = (Key) o;
-                return (x == k.x && y == k.y);
+                return (x == k.x && z == k.z);
             }
             return false;
         }
         @Override
         public int hashCode() {
-            return (x*12)+(y*15);
+            return (x*12)+(z*15);
         }
 
         @Override
