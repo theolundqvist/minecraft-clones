@@ -16,6 +16,10 @@ public class World {
         unloadedChunks = new HashMap<>();
     }
 
+    public int getSize(){
+        return loadedChunks.size();
+    }
+
     public Chunk getChunk(Key k){
         return loadedChunks.get(k);
     }
@@ -24,7 +28,7 @@ public class World {
         loadedChunks.values().forEach((Chunk c) -> c.draw());
     }
 
-    private Key oldPlayerChunk;
+    private Key oldPlayerChunk = new Key(0, 0);
     public void updateChunks(Player p){
         Key playerChunk = getPlayerChunk(p);
         if(!oldPlayerChunk.equals(playerChunk)){

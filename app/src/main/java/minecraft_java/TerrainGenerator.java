@@ -18,9 +18,9 @@ public final class TerrainGenerator {
         int wx = k.x * chunkSize;
         int wz = k.z * chunkSize;
 
-        for (int x = wx-chunkSize/2; x < wx + chunkSize / 2; x++) {
-            for (int z = wz - chunkSize / 2; z < wz + chunkSize / 2; z++) {
-                heightMap[x][z] = (int) getBlockHeight(x, z);
+        for (int x = 0; x < chunkSize; x++) {
+            for (int z = 0; z < chunkSize; z++) {
+                heightMap[x][z] = (int) getBlockHeight(wx + x - chunkSize/2, wz + z - chunkSize / 2);
             }
         }
         return heightMap;
@@ -30,8 +30,17 @@ public final class TerrainGenerator {
 
         lowestValue = chunkHeight - amplitude;
 
-        int[][] heightMap = generateChunkHeightMap(k, chunkSize);
+        //int[][] heightMap = generateChunkHeightMap(k, chunkSize);
         int[][][] blocks = new int[chunkSize][chunkSize][chunkHeight];
+        for (int x = 0; x < blocks.length; x++) {
+            for (int y = 0; y < blocks[x].length; y++) {
+                for (int z = 0; z < blocks[x][y].length; z++) {
+                    if(y < 5){
+                        blocks[x][y][z] = 1;
+                    }
+                }
+            }
+        }
 
         return new Chunk(blocks);
 

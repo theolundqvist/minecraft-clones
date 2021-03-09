@@ -12,7 +12,7 @@ class MeshEngine {
         int[][][] blocks = chunk.getBlocks();
         for (int x = 1; x < blocks.length-1; x++) {
             for (int y = 1; y < blocks[x].length-1; y++) {
-                for (int z = 1; z < blocks[x][z].length - 1; z++) {
+                for (int z = 1; z < blocks[x][y].length - 1; z++) {
                     //FÖR VARJE BLOCK FÖRUTOM KANTERNA
                     int block = blocks[x][y][z];
                     if(block == 0){

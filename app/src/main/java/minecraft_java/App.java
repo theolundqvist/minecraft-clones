@@ -22,7 +22,7 @@ public class App {
 	private static float zoom = 20;
 	private static int mouseX, mouseY;
 	private static final Vector3f center = new Vector3f();
-	private static float pitch = 0.3f, yaw = 0.2f;
+	private static float pitch = 1f, yaw = 0.2f;
 
 
 	static double[][] heightMap = new double[20][20];
@@ -34,6 +34,7 @@ public class App {
 
 		world = new World(16);
 		player = new Player();
+
 
 		// for (int i = 0; i < heightMap.length; i++) {
 		// 	for (int j = 0; j < heightMap[i].length; j++) {
@@ -47,7 +48,13 @@ public class App {
 	private static void draw(){
 
 		player.setPos(player.getPos().add(new Vector3f(0.1f,0,0)));
+		world.updateChunks(player);
+		System.out.println(world.getSize());
+		glBegin(GL_QUADS);
 		world.draw();
+		glEnd();
+		renderGrid();
+		
 		// float low = TerrainGenerator.lowestValue;
 		// float amp = TerrainGenerator.amplitude*2;
 
