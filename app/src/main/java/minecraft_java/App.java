@@ -82,11 +82,17 @@ public class App {
      }
 	}
 
-
+	static float[][] heightMap = new float[100][100];
 	private static void start(){
-
+		for (int i = 0; i < heightMap.length; i++) {
+			for (int j = 0; j < heightMap[i].length; j++) {
+				
+			}
+		}
 		
-		MeshEngine.allDir();
+
+		MeshEngine.getAllDir();
+
 
 	}
 
