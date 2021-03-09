@@ -4,6 +4,7 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
+import java.nio.Buffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
@@ -26,11 +27,9 @@ public class App {
 	private static void draw(){
 		
 		FloatBuffer fb = BufferUtils.createFloatBuffer(16);
-		//drawBlock(0, 0, 0);
-		//draw2();
-		glCallList(listID);
 		renderGrid();
 		printFPS();
+		
 	}
 
 
@@ -83,13 +82,11 @@ public class App {
      }
 	}
 
-	static int listID = 0;
+
 	private static void start(){
-		listID = glGenLists(1);
-		glNewList(listID, GL_COMPILE);
-			drawBlock(0,0,0);
-		glEndList();
+
 		
+		MeshEngine.allDir();
 
 	}
 
@@ -157,13 +154,6 @@ public class App {
 
 	public static void main(String[] args) {
 
-		start();
-
-
-
-
-
-
 
 
 		if (!glfwInit())
@@ -191,12 +181,13 @@ public class App {
 		width = framebufferSize.get(0);
 		height = framebufferSize.get(1);
 		glfwMakeContextCurrent(window);
-		GL.createCapabilities();  //????
+		GL.createCapabilities();  //context
 		glClearColor(0.9f, 0.9f, 0.9f, 1.0f);  //BACKGRUNDSFÄRGEN
 		glEnable(GL_DEPTH_TEST);  //???
 		glEnable(GL_CULL_FACE);  //RITA BARA FRAMSIDAN AV TRIANGLAR
 		glfwSwapInterval(1); //VSYNC
 
+		start();
 		Matrix4f mat = new Matrix4f();
 
 		FloatBuffer fb = BufferUtils.createFloatBuffer(16);
