@@ -10,8 +10,8 @@ import java.nio.IntBuffer;
 
 import org.joml.Math;
 import org.joml.Matrix4f;
+import org.joml.Quaternionf;
 import org.joml.Vector3f;
-import org.joml.Vector3i;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.*;
 
@@ -23,30 +23,61 @@ public class App {
 	private static int mouseX, mouseY;
 	private static final Vector3f center = new Vector3f();
 	private static float pitch = 0.3f, yaw = 0.2f;
-
-	//TEST
-	private static float rotationAngle = 1f;
-	static Vector3f v0 = new Vector3f(0, 1, 0);
-	static Vector3f v1 = new Vector3f(1, 1, 0);
-	static Vector3f v2 = new Vector3f(0, 1, 0);
-
+	
 	private static void draw(){
-		//renderCube(0 ,0, 0);
-		renderGrid();
-		//v2.rotateX(Math.toRadians(rotationAngle));
 		
-		//v2.add(v1);
+		FloatBuffer fb = BufferUtils.createFloatBuffer(16);
+		drawPlane(new Vector3f(0.5f,0.5f,0.5f), new Vector3f(0,1,0));
+		renderGrid();
+		printFPS();
+	}
+
+	static void drawBlock(int x, int y, int z){
+		Vector3f center = new Vector3f(x, y, z);
+		Vector3f offset = new Vector3f();
+		for (int i = 0; i < 4; i++) {
+			
+		}
+	}
+	static void drawPlane(Vector3f mid, Vector3f dir){
+		Vector3f side1 = new Vector3f().orthogonalize(dir).div(2);
+		Vector3f side2 = new Vector3f().orthogonalize(dir).cross(dir).div(2);
+		Vector3f corner = new Vector3f().add(side1).add(side2);
+		//Vector3f corner = side1.add(side2);
+		//.rotateAxis((float)Math.PI/4, dir.x, dir.y, dir.z);
+		//dir.add(mid);
+		//corner.add(mid);//ta bort add mid
+
+		//corner.rotateAxis(Math.PI/8, direction);
+		FloatBuffer fb = BufferUtils.createFloatBuffer(16);
 
 		glBegin(GL_LINES);
-		glColor3f(0, 0, 0);
-		glVertex3f(v0.x(), v0.y(), v0.z());
-		glVertex3f(v1.x(), v1.y(), v1.z());
+		//RÖD
+		glColor3f(1, 0, 0); 
+		glVertex3fv(mid.get(fb));
+		glVertex3fv(dir.add(mid).get(fb));
 
-		glVertex3f(v1.x(), v1.y(), v1.z());
-		glVertex3f(v1.x() + v2.x(), v1.x() + v2.y(), v1.x() + v2.z());
-		//glVertex3f(v2.x(), v2.y(), v2.z());
+		//BLÅ
+		glColor3f(0, 0, 1);
+		glVertex3fv(mid.get(fb));
+		glVertex3fv(side1.add(mid).get(fb));
+
+		// BLÅ
+		glColor3f(0, 1, 0);
+		glVertex3fv(mid.get(fb));
+		glVertex3fv(side2.add(mid).get(fb));
+
+		// BLÅ
+		glColor3f(0, 1, 1);
+		glVertex3fv(mid.get(fb));
+		glVertex3fv(corner.add(mid).get(fb));
+
+		for (int i = 0; i < 4; i++) {
+			//glVertex3fv(corner.sub(mid) //ta bort sub mid
+			//.rotateAxis((float) Math.PI / 2, dir.x, dir.y, dir.z)
+			//.add(mid).get(fb));
+		}
 		glEnd();
-		printFPS();
 	}
 
 
