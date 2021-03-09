@@ -38,14 +38,6 @@ public class Chunk {
         updateMesh();
     }
 
-    public void setBlock(int x, int y, int z, int i){
-        blocks[x][y][z] = i;
-    }
-
-    public int getBlock(int x, int y, int z){
-        return blocks[x][y][z];
-    }
-
     private static class Coord{
         private int x;
         private int y;
