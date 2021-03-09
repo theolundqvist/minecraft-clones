@@ -23,20 +23,20 @@ public class App {
 	private static int mouseX, mouseY;
 	private static final Vector3f center = new Vector3f();
 	private static float pitch = 0.3f, yaw = 0.2f;
+
+
 	static double[][] heightMap = new double[20][20];
+
 	private static void draw(){
 		
-		FloatBuffer fb = BufferUtils.createFloatBuffer(16);
-		//drawBlock(0, 0, 0, new Vector3f(0,0,0));
+
 		for (int x = 0; x < heightMap.length; x++) {
 			for (int z = 0; z < heightMap[x].length; z++) {	
 				float height = (float)heightMap[x][z];
 				drawBlock(x, (int)height, z, new Vector3f(height/10, height/10, height/10));
 			}
 		}
-		//renderGrid();
-		printFPS();
-		
+		//printFPS();
 	}
 
 
