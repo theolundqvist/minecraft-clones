@@ -23,48 +23,33 @@ public class App {
 	private static int mouseX, mouseY;
 	private static final Vector3f center = new Vector3f();
 	private static float pitch = 0.3f, yaw = 0.2f;
-	
+	static double[][] heightMap = new double[20][20];
 	private static void draw(){
 		
 		FloatBuffer fb = BufferUtils.createFloatBuffer(16);
+		//drawBlock(0, 0, 0, new Vector3f(0,0,0));
+		// for (int x = 0; x < heightMap.length; x++) {
+		// 	for (int z = 0; z < heightMap[x].length; z++) {	
+		// 		float height = (float)heightMap[x][z];
+		// 		drawBlock(x, height, z, new Vector3f(height/10, height/10, height/10));
+		// 	}
+		// }
 		renderGrid();
 		printFPS();
 		
 	}
 
 
-	static void drawBlock(int x, int y, int z){
+	static void drawBlock(float x, float y, float z, Vector3f color){
 		Vector3f mid = new Vector3f(x, y, z);
 		Vector3f offset = new Vector3f(1, 0, 0);
-		for (int i = 0; i < 4; i++) {
-			offset.rotateY((float) Math.PI/2);
-			drawPlane(new Vector3f().add(mid).add(offset).div(2), offset);
+		Vector3f[] dirs = MeshEngine.getAllDir();
+		for (Vector3f dir : dirs) {
+			// QuadData qd = new QuadData(new Vector3f(x+dir.x,y+dir.y,z+dir.z), dir);
+			// glBegin(GL_QUADS);
+			// 	qd.draw(color);
+			// glEnd();
 		}
-		offset.rotateZ((float) Math.PI / 2);
-		drawPlane(new Vector3f().add(mid).add(offset).div(2), offset);
-
-		offset.rotateZ((float) Math.PI);
-		drawPlane(new Vector3f().add(mid).add(offset).div(2), offset);
-	}
-	static void drawPlane(Vector3f mid, Vector3f dir){
-		Vector3f side1 = new Vector3f().orthogonalize(dir).div(2);
-		Vector3f side2 = new Vector3f().orthogonalize(dir).cross(dir).div(2);
-		Vector3f corner = side1.add(side2).add(mid);
-
-		FloatBuffer fb = BufferUtils.createFloatBuffer(16);
-
-		glBegin(GL_TRIANGLE_STRIP);
-		
-		//glDrawElements(GL_TRIANGLE_STRIP, indices);
-		//RÖD
-		for (int i = 0; i < 4; i++) { 
-			glVertex3fv(corner
-			.sub(mid).
-			rotateAxis((float) Math.PI / 2, dir.x, dir.y, dir.z)
-			.add(mid)
-			.get(fb));
-		}
-		glEnd();
 	}
 
 
@@ -82,13 +67,17 @@ public class App {
      }
 	}
 
-	static float[][] heightMap = new float[100][100];
+
 	private static void start(){
+		float scaleX = 0.1f;
+		float scaleY = 0.1f;
 		for (int i = 0; i < heightMap.length; i++) {
 			for (int j = 0; j < heightMap[i].length; j++) {
-				
+				heightMap[i][j] = SimplexNoise.noise((double) i * 0.1, (double) j * 0.1);
+				//heightMap[i][j] = Math.random() * 5;
 			}
 		}
+
 		
 
 		MeshEngine.getAllDir();

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Chunk {
     private int[][][] blocks;
     private int chunkSize = 16;
-    private ArrayList<quadData> meshData;
+    private ArrayList<QuadData> meshData;
     
     public Chunk(int[][][] blocks) {
         setBlocks(blocks);
