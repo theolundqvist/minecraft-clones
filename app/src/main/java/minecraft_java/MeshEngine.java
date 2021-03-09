@@ -6,8 +6,8 @@ import org.joml.Vector3f;
 
 class MeshEngine {
     
-    public static ArrayList<QuadData> createMesh(Chunk chunk){
-        ArrayList<QuadData> quads = new ArrayList<>();
+    public static ArrayList<QuadMesh> createMesh(Chunk chunk){
+        ArrayList<QuadMesh> quads = new ArrayList<>();
 
         int[][][] blocks = chunk.getBlocks();
         for (int x = 1; x < blocks.length-1; x++) {
@@ -21,7 +21,7 @@ class MeshEngine {
                             Vector3f otherPos = new Vector3f(x + dir.x, y + dir.y, z + dir.z);
                             int other = blocks[(int)otherPos.x][(int)otherPos.y][(int)otherPos.z];
                             if (other != 0) {
-                                quads.add(new QuadData(otherPos, dir.negate()));
+                                quads.add(new QuadMesh(otherPos, dir.negate()));
                             }
                         }
                     }
