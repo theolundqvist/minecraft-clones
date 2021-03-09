@@ -35,11 +35,15 @@ class MeshEngine {
         Vector3f[] dir = new Vector3f[6];
         Vector3f v = new Vector3f(1,0,0);
         for (int i = 0; i < 4; i++) {
-            dir[i] = v.rotateY((float) Math.PI / 2).round();
+            dir[i] = cpV(v.rotateY((float) Math.PI / 2).round());
         }
-        dir[4] = v.rotateZ((float) Math.PI / 2).round();
-        dir[5] = v.rotateZ((float) Math.PI).round();
+        dir[4] = cpV(v.rotateZ((float) Math.PI / 2).round());
+        dir[5] = cpV(v.rotateZ((float) Math.PI).round());
         return dir;
+    }
+
+    private static Vector3f cpV(Vector3f v){
+        return new Vector3f(v);
     }
 
 
