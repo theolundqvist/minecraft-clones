@@ -12,19 +12,27 @@ public final class TerrainGenerator {
         return amplitude * SimplexNoise.noise((double) x * scaleX, (double) z * scaleY) + amplitude + lowestValue;
     }
 
-    private static int[][] generateChunkHeightMap(Key chunkKey, int chunkSize){
+    private static int[][] generateChunkHeightMap(Key k, int chunkSize){
+
         int[][] heightMap = new int[chunkSize][chunkSize];
-        Vector2i cPos = new Vector2i(chunkKey.x * chunkSize, chunkKey.z * chunkSize);
-        for (int x = cPos.x-chunkSize/2; x < cPos.x + chunkSize / 2; x++) {
-            for (int z = cPos.y - chunkSize / 2; z < cPos.y + chunkSize / 2; z++) {
-                heightMap[x][z] = (int)getBlockHeight(x, z);
+        int wx = k.x * chunkSize;
+        int wz = k.z * chunkSize;
+
+        for (int x = wx-chunkSize/2; x < wx + chunkSize / 2; x++) {
+            for (int z = wz - chunkSize / 2; z < wz + chunkSize / 2; z++) {
+                heightMap[x][z] = (int) getBlockHeight(x, z);
             }
         }
         return heightMap;
     }
 
-    // public static int[][][] generateChunkBlocks(Key chunkKey, int chunkSize){
+    public static int[][][] generateChunkBlocks(Key k, int chunkSize, int chunkHeight){
 
-    // }
+        int[][] heightMap = generateChunkHeightMap(k, chunkSize);
+        int[][][] blocks = new int[chunkSize][chunkSize][chunkHeight];
+
+
+
+    }
 
 }

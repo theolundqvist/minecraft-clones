@@ -3,10 +3,11 @@ package minecraft_java;
 import java.util.HashMap;
 
 
-public class World {
+public final class World {
     private HashMap<Key, Chunk> loadedChunks;
     private HashMap<Key, Chunk> unloadedChunks;
     private final int chunkSize;
+    private final int chunkHeight = 64;
     private int renderDistance = 1;
 
     public World(int chunkSize) {
