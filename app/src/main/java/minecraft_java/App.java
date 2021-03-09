@@ -8,8 +8,10 @@ import static org.lwjgl.system.MemoryUtil.*;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
+import org.joml.Math;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
+import org.joml.Vector3i;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.*;
 
@@ -22,24 +24,52 @@ public class App {
 	private static final Vector3f center = new Vector3f();
 	private static float pitch = 0.3f, yaw = 0.2f;
 
+	//TEST
+	private static float rotationAngle = 1f;
+	static Vector3f v0 = new Vector3f(0, 1, 0);
+	static Vector3f v1 = new Vector3f(1, 1, 0);
+	static Vector3f v2 = new Vector3f(0, 1, 0);
+
 	private static void draw(){
-		renderCube(0 ,0, 0);
+		//renderCube(0 ,0, 0);
+		renderGrid();
+		//v2.rotateX(Math.toRadians(rotationAngle));
+		
+		//v2.add(v1);
+
+		glBegin(GL_LINES);
+		glColor3f(0, 0, 0);
+		glVertex3f(v0.x(), v0.y(), v0.z());
+		glVertex3f(v1.x(), v1.y(), v1.z());
+
+		glVertex3f(v1.x(), v1.y(), v1.z());
+		glVertex3f(v1.x() + v2.x(), v1.x() + v2.y(), v1.x() + v2.z());
+		//glVertex3f(v2.x(), v2.y(), v2.z());
+		glEnd();
+		printFPS();
 	}
 
+
+	static double lastTime = glfwGetTime();
+	static int nbFrames = 0;
+
+	private static void printFPS() {
+     double currentTime = glfwGetTime();
+     nbFrames++;
+     if ( currentTime - lastTime >= 1.0 ){ // If last prinf() was more than 1 sec ago
+         // printf and reset timer
+         System.out.println("fps\n" + nbFrames);
+         nbFrames = 0;
+         lastTime += 1.0;
+     }
+	}
+
+
 	private static void start(){
-		Vector3f mid = new Vector3f(0, 0, 0);
-		Vector3f midOfPlane = new Vector3f(0.5f, 0, 0);
-		Vector3f offset = new Vector3f(1, 0, 0);
 
-		Matrix4f m = new Matrix4f();
-
-		m.translate(offset)
-		.rotate((float) Math.PI, 0, 1, 0)
-		.transformPosition(offset);
 
 		
 
-		System.out.println(offset.toString());
 	}
 
 	static void setupCameraControls() {
@@ -73,6 +103,10 @@ public class App {
 	private static void renderCube(int x, int y, int z) {
 		glBegin(GL_QUADS);
 		glColor4f(0.0f, 0.0f, 0.2f, 0.5f);
+		glVertex3i(-1, -1, 0);
+		glVertex3i(0, -1, 0);
+		glVertex3i(0, 0, 0);
+		glVertex3i(-1, 0, 0);
 
 
 		//midOfPlane.cross(1,0,0);
@@ -136,9 +170,11 @@ public class App {
 		width = framebufferSize.get(0);
 		height = framebufferSize.get(1);
 		glfwMakeContextCurrent(window);
-		GL.createCapabilities();
-		glClearColor(0.9f, 0.9f, 0.9f, 1.0f);
-		glEnable(GL_DEPTH_TEST);
+		GL.createCapabilities();  //????
+		glClearColor(0.9f, 0.9f, 0.9f, 1.0f);  //BACKGRUNDSFÄRGEN
+		glEnable(GL_DEPTH_TEST);  //???
+		glEnable(GL_CULL_FACE);  //RITA BARA FRAMSIDAN AV TRIANGLAR
+		glfwSwapInterval(1); //VSYNC
 
 		Matrix4f mat = new Matrix4f();
 
