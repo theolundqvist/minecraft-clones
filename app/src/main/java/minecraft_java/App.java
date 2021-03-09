@@ -28,13 +28,13 @@ public class App {
 		
 		FloatBuffer fb = BufferUtils.createFloatBuffer(16);
 		//drawBlock(0, 0, 0, new Vector3f(0,0,0));
-		// for (int x = 0; x < heightMap.length; x++) {
-		// 	for (int z = 0; z < heightMap[x].length; z++) {	
-		// 		float height = (float)heightMap[x][z];
-		// 		drawBlock(x, height, z, new Vector3f(height/10, height/10, height/10));
-		// 	}
-		// }
-		renderGrid();
+		for (int x = 0; x < heightMap.length; x++) {
+			for (int z = 0; z < heightMap[x].length; z++) {	
+				float height = (float)heightMap[x][z];
+				drawBlock(x, (int)height, z, new Vector3f(height/10, height/10, height/10));
+			}
+		}
+		//renderGrid();
 		printFPS();
 		
 	}
@@ -45,10 +45,10 @@ public class App {
 		Vector3f offset = new Vector3f(1, 0, 0);
 		Vector3f[] dirs = MeshEngine.getAllDir();
 		for (Vector3f dir : dirs) {
-			// QuadData qd = new QuadData(new Vector3f(x+dir.x,y+dir.y,z+dir.z), dir);
-			// glBegin(GL_QUADS);
-			// 	qd.draw(color);
-			// glEnd();
+			QuadMesh qd = new QuadMesh(new Vector3f(x+dir.x/2,y+dir.y/2,z+dir.z/2), dir);
+			glBegin(GL_QUADS);
+				qd.draw(color);
+			glEnd();
 		}
 	}
 
@@ -69,18 +69,14 @@ public class App {
 
 
 	private static void start(){
-		float scaleX = 0.1f;
-		float scaleY = 0.1f;
+
 		for (int i = 0; i < heightMap.length; i++) {
 			for (int j = 0; j < heightMap[i].length; j++) {
-				heightMap[i][j] = SimplexNoise.noise((double) i * 0.1, (double) j * 0.1);
+				heightMap[i][j] = TerrainGenerator.getBlockHeight(i, j);
 				//heightMap[i][j] = Math.random() * 5;
 			}
 		}
 
-		
-
-		MeshEngine.getAllDir();
 
 
 	}

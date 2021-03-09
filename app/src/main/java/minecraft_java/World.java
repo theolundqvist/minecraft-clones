@@ -22,7 +22,7 @@ public class World {
         Key playerChunk = getPlayerChunk(p);
         if(!oldPlayerChunk.equals(playerChunk)){
             oldPlayerChunk = playerChunk;
-            loadNewChunks();
+            loadNewChunks(p);
         }
     }
 
@@ -30,7 +30,7 @@ public class World {
         return new Key((int) p.getPos().x/chunkSize, (int) p.getPos().z/chunkSize);
     }
 
-    private void loadNewChunks(){
+    private void loadNewChunks(Player p){
 
 
         //om new Key inte existerar put(new chunk)
