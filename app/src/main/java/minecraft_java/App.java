@@ -26,55 +26,44 @@ public class App {
 	private static void draw(){
 		
 		FloatBuffer fb = BufferUtils.createFloatBuffer(16);
-		drawPlane(new Vector3f(0.5f,0.5f,0.5f), new Vector3f(0,1,0));
+		//drawBlock(0, 0, 0);
+		//draw2();
+		glCallList(listID);
 		renderGrid();
 		printFPS();
 	}
 
+
 	static void drawBlock(int x, int y, int z){
-		Vector3f center = new Vector3f(x, y, z);
-		Vector3f offset = new Vector3f();
+		Vector3f mid = new Vector3f(x, y, z);
+		Vector3f offset = new Vector3f(1, 0, 0);
 		for (int i = 0; i < 4; i++) {
-			
+			offset.rotateY((float) Math.PI/2);
+			drawPlane(new Vector3f().add(mid).add(offset).div(2), offset);
 		}
+		offset.rotateZ((float) Math.PI / 2);
+		drawPlane(new Vector3f().add(mid).add(offset).div(2), offset);
+
+		offset.rotateZ((float) Math.PI);
+		drawPlane(new Vector3f().add(mid).add(offset).div(2), offset);
 	}
 	static void drawPlane(Vector3f mid, Vector3f dir){
 		Vector3f side1 = new Vector3f().orthogonalize(dir).div(2);
 		Vector3f side2 = new Vector3f().orthogonalize(dir).cross(dir).div(2);
-		Vector3f corner = new Vector3f().add(side1).add(side2);
-		//Vector3f corner = side1.add(side2);
-		//.rotateAxis((float)Math.PI/4, dir.x, dir.y, dir.z);
-		//dir.add(mid);
-		//corner.add(mid);//ta bort add mid
+		Vector3f corner = side1.add(side2).add(mid);
 
-		//corner.rotateAxis(Math.PI/8, direction);
 		FloatBuffer fb = BufferUtils.createFloatBuffer(16);
 
-		glBegin(GL_LINES);
-		//RÖD
-		glColor3f(1, 0, 0); 
-		glVertex3fv(mid.get(fb));
-		glVertex3fv(dir.add(mid).get(fb));
-
-		//BLÅ
-		glColor3f(0, 0, 1);
-		glVertex3fv(mid.get(fb));
-		glVertex3fv(side1.add(mid).get(fb));
-
-		// BLÅ
-		glColor3f(0, 1, 0);
-		glVertex3fv(mid.get(fb));
-		glVertex3fv(side2.add(mid).get(fb));
-
-		// BLÅ
-		glColor3f(0, 1, 1);
-		glVertex3fv(mid.get(fb));
-		glVertex3fv(corner.add(mid).get(fb));
+		glBegin(GL_TRIANGLE_STRIP);
 		
-		for (int i = 0; i < 4; i++) {
-			//glVertex3fv(corner.sub(mid) //ta bort sub mid
-			//.rotateAxis((float) Math.PI / 2, dir.x, dir.y, dir.z)
-			//.add(mid).get(fb));
+		//glDrawElements(GL_TRIANGLE_STRIP, indices);
+		//RÖD
+		for (int i = 0; i < 4; i++) { 
+			glVertex3fv(corner
+			.sub(mid).
+			rotateAxis((float) Math.PI / 2, dir.x, dir.y, dir.z)
+			.add(mid)
+			.get(fb));
 		}
 		glEnd();
 	}
@@ -94,10 +83,12 @@ public class App {
      }
 	}
 
-
+	static int listID = 0;
 	private static void start(){
-
-
+		listID = glGenLists(1);
+		glNewList(listID, GL_COMPILE);
+			drawBlock(0,0,0);
+		glEndList();
 		
 
 	}
