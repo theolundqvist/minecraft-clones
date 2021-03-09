@@ -7,6 +7,10 @@ public class World {
     private HashMap<Key, Chunk> worldMap;
     private int size;
 
+
+    public World() {
+    }
+
     public World(int size) {
         this.size = size;
     }
