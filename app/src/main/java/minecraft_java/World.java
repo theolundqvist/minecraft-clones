@@ -8,7 +8,7 @@ public class World {
     private HashMap<Key, Chunk> unloadedChunks;
     private int chunkSize;
     private int chunkHeight = 64;
-    private int renderDistance = 2;
+    private int renderDistance = 5;
 
     public World(int chunkSize) {
         this.chunkSize = chunkSize;
@@ -21,8 +21,11 @@ public class World {
     }
 
     public void printDebugData() {
-        System.out.println(getSize());
-        loadedChunks.keySet().forEach((Key k) -> System.out.println(k.toString()));
+        System.out.println("\nCurrently loaded: " +getSize());
+        System.out.println("Total generated: " + (getSize() + unloadedChunks.size()));
+        System.out.println("Size in ram estimate:\nBlockdata: " 
+        + (getSize() + unloadedChunks.size())*16*16*64*4/1E6 + "MB\n" +
+        "Meshdata: " + (getSize() + unloadedChunks.size())*500*(12+16*16*3)*4/1E6 + "MB");
     }
 
     public Chunk getChunk(Key k){
@@ -52,6 +55,7 @@ public class World {
     }
 
     private void loadNewChunks(Player p){
+        printDebugData();
         Key pk = getPlayerChunk(p);
         HashMap<Key, Chunk> toUnload = new HashMap<Key, Chunk>(loadedChunks);
         //om new Key inte existerar put(new chunk)
@@ -61,14 +65,14 @@ public class World {
                 //Not loaded but should be
                 if (!(loadedChunks.containsKey(k))){
                     if(unloadedChunks.containsKey(k)){
-                        System.out.println("Loading chunk from memory " + k.toString());
+                        //System.out.println("Loading chunk from memory " + k.toString());
                         loadedChunks.put(k, unloadedChunks.get(k));
                         unloadedChunks.remove(k);
                     }
                     else{
-                        System.out.println("Generating new chunk " + k.toString());
+                        //System.out.println("Generating new chunk " + k.toString());
                         loadedChunks.put(k, TerrainGenerator.generateChunk(k, chunkSize, chunkHeight));
-                        System.out.println("loadedChunks: " + getSize());
+                        //System.out.println("loadedChunks: " + getSize());
                     }
                 } else { //loaded and should be
                     toUnload.remove(k);
@@ -77,7 +81,7 @@ public class World {
         }
         unloadedChunks.putAll(toUnload);
         toUnload.keySet().forEach(key -> loadedChunks.remove(key));
-        toUnload.keySet().forEach(key -> System.out.println("Unloading chunk " + key.toString()));
+        //toUnload.keySet().forEach(key -> System.out.println("Unloading chunk " + key.toString()));
     }
 
 

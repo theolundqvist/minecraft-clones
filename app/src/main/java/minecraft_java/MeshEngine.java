@@ -6,8 +6,8 @@ import org.joml.Vector3f;
 
 class MeshEngine {
     
-    public static ArrayList<QuadMesh> createMesh(Chunk chunk){
-        ArrayList<QuadMesh> quads = new ArrayList<>();
+    public static ArrayList<CubeFace> createMesh(Chunk chunk){
+        ArrayList<CubeFace> quads = new ArrayList<>();
         Vector3f worldOffset = chunk.getWorldOffset();
 
         Vector3f color = new Vector3f(0.4f, 0.6f, 0.4f); //TEMP
@@ -25,7 +25,7 @@ class MeshEngine {
                             int other = blocks[(int)otherPos.x][(int)otherPos.y][(int)otherPos.z];
                             otherPos.add(worldOffset);
                             if (other != 0) {
-                                quads.add(new QuadMesh(otherPos.add(dir.negate().div(2)), dir, new Vector3f(color).add(dir.div(8))));
+                                quads.add(new CubeFace(otherPos.add(dir.negate().div(2)), dir, new Vector3f(color).add(dir.div(8))));
                             }
                         }
                     }

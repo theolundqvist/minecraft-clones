@@ -4,11 +4,11 @@ import static org.lwjgl.opengl.GL11.*;
 
 import org.joml.Vector3f;
 
-public class QuadMesh {
+public class CubeFace {
     public float[][] vertexData = new float[4][3];
     public float[] color = new float[3];
 
-    public QuadMesh(Vector3f pos, Vector3f dir, Vector3f c){
+    public CubeFace(Vector3f pos, Vector3f dir, Vector3f c){
         color = new float[]{c.x, c.y, c.z};
         calculateCorners(pos, dir);
     }

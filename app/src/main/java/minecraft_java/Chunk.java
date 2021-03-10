@@ -6,7 +6,7 @@ import org.joml.Vector3f;
 
 public class Chunk {
     private int[][][] blocks;
-    private ArrayList<QuadMesh> meshData;
+    public ArrayList<CubeFace> meshData;
     private Key pos;
     private int size;
     
@@ -25,7 +25,7 @@ public class Chunk {
     }
 
     public void draw(){
-        for (QuadMesh q : meshData) {
+        for (CubeFace q : meshData) {
             q.draw();
         }
     }

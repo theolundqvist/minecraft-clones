@@ -48,6 +48,7 @@ public class App {
 	private static void draw(){
 
 		//player.setPos(player.getPos().add(new Vector3f(0.1f,0,0)));
+		handleKeyEvents();
 		world.updateChunks(player);
 		//System.out.println(world.getSize());
 		//world.printDebugData();
@@ -77,12 +78,17 @@ public class App {
 	}
 
 
+	private static void handleKeyEvents() {
+		center.add(moveDir);
+		player.setPos(center);
+	}
+
 	static public void drawBlock(float x, float y, float z, Vector3f color){
 		Vector3f mid = new Vector3f(x, y, z);
 		Vector3f offset = new Vector3f(1, 0, 0);
 		Vector3f[] dirs = MeshEngine.getAllDir();
 		for (Vector3f dir : dirs) {
-			QuadMesh qd = new QuadMesh(new Vector3f(x+dir.x/2,y+dir.y/2,z+dir.z/2), dir, color);
+			CubeFace qd = new CubeFace(new Vector3f(x+dir.x/2,y+dir.y/2,z+dir.z/2), dir, color);
 			glBegin(GL_QUADS);
 				qd.draw();
 			glEnd();
@@ -90,23 +96,8 @@ public class App {
 	}
 
 
-	static double lastTime = glfwGetTime();
-	static int nbFrames = 0;
 
-	private static void printFPS() {
-     double currentTime = glfwGetTime();
-     nbFrames++;
-     if ( currentTime - lastTime >= 1.0 ){ // If last prinf() was more than 1 sec ago
-         // printf and reset timer
-         System.out.println("fps\n" + nbFrames);
-         nbFrames = 0;
-         lastTime += 1.0;
-     }
-	}
-
-
-
-
+	static Vector3f moveDir = new Vector3f();
 	static void setupCameraControls() {
 		glfwSetFramebufferSizeCallback(window, (win, w, h) -> {
 			if (w > 0 && h > 0) {
@@ -141,48 +132,18 @@ public class App {
 				center.set((float) Math.random() * 20.0f - 10.0f, 0.0f, (float) Math.random() * 20.0f - 10.0f);
 			}
 			if (k == GLFW_KEY_W) {
-				center.x += 0.1f;
-				player.setPos(center);
-			}
-			if (k == GLFW_KEY_A) {
-				center.z += 0.1f;
-				player.setPos(center);
+				moveDir.x = (a == GLFW_RELEASE) ? 0 : 0.1f;
 			}
 			if (k == GLFW_KEY_S) {
-				center.x -= 0.1f;
-				player.setPos(center);
+				moveDir.x = (a == GLFW_RELEASE) ? 0 : -0.1f;
+			}
+			if (k == GLFW_KEY_A) {
+				moveDir.z = (a == GLFW_RELEASE) ? 0 : -0.1f;
 			}
 			if (k == GLFW_KEY_D) {
-				center.z -= 0.1f;
-				player.setPos(center);
+				moveDir.z = (a == GLFW_RELEASE) ? 0 : 0.1f;
 			}
 		});
-	}
-
-
-
-
-
-	private static void renderCube(int x, int y, int z) {
-		glBegin(GL_QUADS);
-		glColor4f(0.0f, 0.0f, 0.2f, 0.5f);
-		glVertex3i(-1, -1, 0);
-		glVertex3i(0, -1, 0);
-		glVertex3i(0, 0, 0);
-		glVertex3i(-1, 0, 0);
-
-
-		//midOfPlane.cross(1,0,0);
-
-		//midOfPlane = midOfPlane.add(mid);
-
-		//System.out.println(midOfPlane.toString());
-
-		glEnd();
-	}
-
-	private static void renderPlane(){
-		
 	}
 
 	private static void renderGrid() {
