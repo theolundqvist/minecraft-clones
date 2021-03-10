@@ -35,7 +35,6 @@ public class App {
 
 		world = new World(16);
 		player = new Player();
-		System.out.println(new Key(-1, -1).equals(new Key(-1, -1)));
 
 		// for (int i = 0; i < heightMap.length; i++) {
 		// 	for (int j = 0; j < heightMap[i].length; j++) {
@@ -53,9 +52,11 @@ public class App {
 		//System.out.println(world.getSize());
 		//world.printDebugData();
 		player.draw();
+
 		glBegin(GL_QUADS);
-		world.draw();
+			world.draw();
 		glEnd();
+
 		renderGrid();
 		
 		// float low = TerrainGenerator.lowestValue;

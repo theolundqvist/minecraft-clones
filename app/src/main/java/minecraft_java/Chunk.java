@@ -21,7 +21,7 @@ public class Chunk {
     }
 
     public Vector3f getWorldOffset(){
-        return new Vector3f(pos.x * size, 0, pos.z * size);
+        return new Vector3f(pos.x * size - size/2, 0, pos.z * size - size/2);
     }
 
     public void draw(){
