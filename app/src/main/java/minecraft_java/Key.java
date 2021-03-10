@@ -11,11 +11,13 @@ public class Key {
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof Key) {
-            Key k = (Key) o;
-            return (x == k.x && z == k.z);
-        }
-        return false;
+        if(this == o) return true;
+        if(o == null) return false;
+        if (this.getClass() != o.getClass())return false;
+
+        Key k = (Key) o;
+        return x == k.x && z == k.z;
+
     }
 
     @Override

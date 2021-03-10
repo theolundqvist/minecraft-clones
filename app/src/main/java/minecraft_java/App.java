@@ -21,8 +21,9 @@ public class App {
 	private static int height = 600;
 	private static float zoom = 20;
 	private static int mouseX, mouseY;
-	private static final Vector3f center = new Vector3f();
+	private static final Vector3f center = new Vector3f(0, 0, 0);
 	private static float pitch = 1f, yaw = 0.2f;
+	private static float camClipFar = 1000f, camClipNear = 0.5f;
 
 
 	static double[][] heightMap = new double[20][20];
@@ -34,7 +35,7 @@ public class App {
 
 		world = new World(16);
 		player = new Player();
-
+		System.out.println(new Key(-1, -1).equals(new Key(-1, -1)));
 
 		// for (int i = 0; i < heightMap.length; i++) {
 		// 	for (int j = 0; j < heightMap[i].length; j++) {
@@ -47,9 +48,11 @@ public class App {
 
 	private static void draw(){
 
-		player.setPos(player.getPos().add(new Vector3f(0.1f,0,0)));
+		//player.setPos(player.getPos().add(new Vector3f(0.1f,0,0)));
 		world.updateChunks(player);
-		System.out.println(world.getSize());
+		//System.out.println(world.getSize());
+		//world.printDebugData();
+		player.draw();
 		glBegin(GL_QUADS);
 		world.draw();
 		glEnd();
@@ -73,14 +76,14 @@ public class App {
 	}
 
 
-	static void drawBlock(float x, float y, float z, Vector3f color){
+	static public void drawBlock(float x, float y, float z, Vector3f color){
 		Vector3f mid = new Vector3f(x, y, z);
 		Vector3f offset = new Vector3f(1, 0, 0);
 		Vector3f[] dirs = MeshEngine.getAllDir();
 		for (Vector3f dir : dirs) {
-			QuadMesh qd = new QuadMesh(new Vector3f(x+dir.x/2,y+dir.y/2,z+dir.z/2), dir);
+			QuadMesh qd = new QuadMesh(new Vector3f(x+dir.x/2,y+dir.y/2,z+dir.z/2), dir, color);
 			glBegin(GL_QUADS);
-				qd.draw(color);
+				qd.draw();
 			glEnd();
 		}
 	}
@@ -115,6 +118,11 @@ public class App {
 				yaw += ((int) x - mouseX) * 0.01f;
 				pitch += ((int) y - mouseY) * 0.01f;
 			}
+			if (glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_2) == GLFW_PRESS) {
+				center.x += (((int) x - mouseX) * 0.1f);
+				center.z += (((int) y - mouseY) * 0.1f);
+				player.setPos(center);
+			}
 			mouseX = (int) x;
 			mouseY = (int) y;
 		});
@@ -123,6 +131,29 @@ public class App {
 				zoom /= 1.1f;
 			} else {
 				zoom *= 1.1f;
+			}
+		});
+		glfwSetKeyCallback(window, (win, k, s, a, m) -> {
+			if (k == GLFW_KEY_ESCAPE && a == GLFW_RELEASE)
+				glfwSetWindowShouldClose(window, true);
+			if (k == GLFW_KEY_ENTER && a == GLFW_PRESS) {
+				center.set((float) Math.random() * 20.0f - 10.0f, 0.0f, (float) Math.random() * 20.0f - 10.0f);
+			}
+			if (k == GLFW_KEY_W) {
+				center.x += 0.1f;
+				player.setPos(center);
+			}
+			if (k == GLFW_KEY_A) {
+				center.z += 0.1f;
+				player.setPos(center);
+			}
+			if (k == GLFW_KEY_S) {
+				center.x -= 0.1f;
+				player.setPos(center);
+			}
+			if (k == GLFW_KEY_D) {
+				center.z -= 0.1f;
+				player.setPos(center);
 			}
 		});
 	}
@@ -180,13 +211,7 @@ public class App {
 
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-		glfwSetKeyCallback(window, (win, k, s, a, m) -> {
-			if (k == GLFW_KEY_ESCAPE && a == GLFW_RELEASE)
-				glfwSetWindowShouldClose(window, true);
-			if (k == GLFW_KEY_ENTER && a == GLFW_PRESS) {
-				center.set((float) Math.random() * 20.0f - 10.0f, 0.0f, (float) Math.random() * 20.0f - 10.0f);
-			}
-		});
+
 		setupCameraControls();
 
 		IntBuffer framebufferSize = BufferUtils.createIntBuffer(2);
@@ -210,7 +235,8 @@ public class App {
 			glMatrixMode(GL_PROJECTION);
 
 			glLoadMatrixf(
-					mat.setPerspective((float) Math.toRadians(45.0f), (float) width / height, 0.01f, 100.0f).get(fb));
+					mat.setPerspective((float) Math.toRadians(45.0f), (float) width / height, 
+							camClipNear, camClipFar).get(fb));
 			glMatrixMode(GL_MODELVIEW);
 			// Load arcball camera view matrix into 'mat':
 			glLoadMatrixf(

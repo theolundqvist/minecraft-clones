@@ -6,8 +6,10 @@ import org.joml.Vector3f;
 
 public class QuadMesh {
     public float[][] vertexData = new float[4][3];
+    public float[] color = new float[3];
 
-    public QuadMesh(Vector3f pos, Vector3f dir){
+    public QuadMesh(Vector3f pos, Vector3f dir, Vector3f c){
+        color = new float[]{c.x, c.y, c.z};
         calculateCorners(pos, dir);
     }
 
@@ -26,8 +28,8 @@ public class QuadMesh {
         }
     }
 
-    public void draw(Vector3f color){
-        glColor3fv(new float[]{color.x, color.y, color.z});
+    public void draw(){
+        glColor3fv(color);
         for (float[] fs : vertexData) {
             glVertex3fv(fs);
         }

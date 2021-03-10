@@ -20,6 +20,11 @@ public class World {
         return loadedChunks.size();
     }
 
+    public void printDebugData() {
+        System.out.println(getSize());
+        loadedChunks.keySet().forEach((Key k) -> System.out.println(k.toString()));
+    }
+
     public Chunk getChunk(Key k){
         return loadedChunks.get(k);
     }
@@ -28,10 +33,10 @@ public class World {
         loadedChunks.values().forEach((Chunk c) -> c.draw());
     }
 
-    private Key oldPlayerChunk = new Key(0, 0);
+    private Key oldPlayerChunk;
     public void updateChunks(Player p){
         Key playerChunk = getPlayerChunk(p);
-        if(!oldPlayerChunk.equals(playerChunk)){
+        if(oldPlayerChunk == null || !oldPlayerChunk.equals(playerChunk)){
             oldPlayerChunk = playerChunk;
             loadNewChunks(p);
         }
@@ -48,21 +53,27 @@ public class World {
         for (int i = -renderDistance; i <= renderDistance; i++) {
             for (int j = -renderDistance; j <= renderDistance; j++) {
                 k = new Key(k.x += i, k.z += j);
+                //Not loaded but should be
                 if (!(loadedChunks.containsKey(k))){
                     if(unloadedChunks.containsKey(k)){
+                        System.out.println("Loading chunk from memory " + k.toString());
                         loadedChunks.put(k, unloadedChunks.get(k));
                         unloadedChunks.remove(k);
                     }
                     else{
-                        loadedChunks.put(k, TerrainGenerator.generateChunkBlocks(k, chunkSize, chunkHeight));
+                        System.out.println("Generating new chunk " + k.toString() + ", hashcode: " + k.hashCode());
+                        loadedChunks.put(k, TerrainGenerator.generateChunk(k, chunkSize, chunkHeight));
+                        System.out.println("loadedChunks: " + getSize());
                     }
-                } else {
+                } else { //loaded and should be
                     toUnload.remove(k);
                 }
             }
             unloadedChunks.putAll(toUnload);
             toUnload.keySet().forEach(key -> loadedChunks.remove(key));
+            toUnload.keySet().forEach(key -> System.out.println("Unloading chunk " + key.toString()));
         }
     }
+
 
 }

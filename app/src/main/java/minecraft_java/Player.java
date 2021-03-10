@@ -13,6 +13,11 @@ public class Player {
         pos = new Vector3f(x, y, z);
     }
 
+    public void draw(){
+        App.drawBlock(pos.x, pos.y, pos.z, new Vector3f(0,0,0));
+        App.drawBlock(pos.x, pos.y+1, pos.z, new Vector3f(0, 0, 0));
+    }
+
     public Vector3f getPos(){
         return pos;
     }

@@ -7,8 +7,12 @@ import org.joml.Vector3f;
 public class Chunk {
     private int[][][] blocks;
     private ArrayList<QuadMesh> meshData;
+    private Key pos;
+    private int size;
     
-    public Chunk(int[][][] blocks) {
+    public Chunk(int[][][] blocks, Key pos, int size) {
+        this.pos = pos;
+        this.size = size;
         setBlocks(blocks);
     }
 
@@ -16,9 +20,13 @@ public class Chunk {
         meshData = MeshEngine.createMesh(this);
     }
 
+    public Vector3f getWorldOffset(){
+        return new Vector3f(pos.x * size, 0, pos.z * size);
+    }
+
     public void draw(){
         for (QuadMesh q : meshData) {
-            q.draw(new Vector3f(0.5f,0.5f,0.5f));
+            q.draw();
         }
     }
 
