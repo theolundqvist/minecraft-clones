@@ -44,8 +44,11 @@ public class World {
     }
 
     private Key getPlayerChunk(Player p){
-        
-        return new Key((int) p.getPos().x/chunkSize, (int) p.getPos().z/chunkSize);
+        float x = p.getPos().x, z = p.getPos().z;
+        x = x + x/Math.abs(x) * chunkSize/2;
+        z = z + z/Math.abs(z) * chunkSize/2;
+
+        return new Key((int) x/chunkSize, (int) z/chunkSize);
     }
 
     private void loadNewChunks(Player p){

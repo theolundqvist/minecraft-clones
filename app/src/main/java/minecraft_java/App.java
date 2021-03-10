@@ -21,7 +21,7 @@ public class App {
 	private static int height = 600;
 	private static float zoom = 20;
 	private static int mouseX, mouseY;
-	private static final Vector3f center = new Vector3f(0, 0, 0);
+	private static final Vector3f center = new Vector3f(0, 35, 0);
 	private static float pitch = 1f, yaw = 0.2f;
 	private static float camClipFar = 1000f, camClipNear = 0.5f;
 
@@ -188,11 +188,11 @@ public class App {
 	private static void renderGrid() {
 		glBegin(GL_LINES);
 		glColor3f(0.2f, 0.2f, 0.2f);
-		for (int i = -20; i <= 20; i++) {
-			glVertex3f(-20.0f, 0.0f, i);
-			glVertex3f(20.0f, 0.0f, i);
-			glVertex3f(i, 0.0f, -20.0f);
-			glVertex3f(i, 0.0f, 20.0f);
+		for (int i = -16; i <= 16; i++) {
+			glVertex3f(-16.0f, 0.0f, i);
+			glVertex3f(16.0f, 0.0f, i);
+			glVertex3f(i, 0.0f, -16.0f);
+			glVertex3f(i, 0.0f, 16.0f);
 		}
 		glEnd();
 	}
