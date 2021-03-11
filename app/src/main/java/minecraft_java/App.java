@@ -82,7 +82,7 @@ public class App {
 
 		world = new World(16);
 		player = new Player(0, 55, 0);
-		cam = new Camera(45, window);
+		cam = new Camera(65, window);
 		cam.updateCanvasSize(width, height);
 
 
@@ -123,6 +123,10 @@ public class App {
 			player.move(player.LEFT);
 		if (keyDown[GLFW_KEY_D])
 			player.move(player.RIGHT);
+		if (keyDown[GLFW_KEY_SPACE])
+			player.move(player.UP);
+		if (keyDown[GLFW_KEY_LEFT_SHIFT])
+			player.move(player.DOWN);
 
 	}
 

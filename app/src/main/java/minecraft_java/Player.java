@@ -12,6 +12,8 @@ public class Player {
     final byte BACKWARDS = 2;
     final byte LEFT = 3;
     final byte RIGHT = 4;
+    final byte UP = 5;
+    final byte DOWN = 6;
 
 
 
@@ -65,6 +67,12 @@ public class Player {
 
             case RIGHT:
                 pos.add(RL);
+                break;
+            case UP:
+                pos.y += relativeSpeed;
+                break;
+            case DOWN:
+                pos.y -= relativeSpeed;
                 break;
         }
     }
