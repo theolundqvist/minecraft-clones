@@ -39,14 +39,16 @@ GENERATION
 
 
 PLAYER
-THEO - * first person, 
-* change speed with scrollwheel,
 * collisions
 
 REFACTOR
+
+
+
+DONE
 THEO - * APP
-
-
+THEO - * change speed with scrollwheel,
+THEO - * first person, 
 
 */ 
 
@@ -117,14 +119,19 @@ public class App {
 
 		if (keyDown[GLFW_KEY_W])
 			player.move(player.FORWARDS);
+
 		if (keyDown[GLFW_KEY_S])
 			player.move(player.BACKWARDS);
+
 		if (keyDown[GLFW_KEY_A])
 			player.move(player.LEFT);
+
 		if (keyDown[GLFW_KEY_D])
 			player.move(player.RIGHT);
+
 		if (keyDown[GLFW_KEY_SPACE])
 			player.move(player.UP);
+
 		if (keyDown[GLFW_KEY_LEFT_SHIFT])
 			player.move(player.DOWN);
 
