@@ -2,6 +2,8 @@ package minecraft_java;
 
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
+import org.lwjgl.BufferUtils;
+
 import static org.lwjgl.opengl.GL46.*;
 
 import java.nio.FloatBuffer;
@@ -20,18 +22,19 @@ public class Camera {
     private Matrix4f mat;
     private FloatBuffer buffer;
 
-    public Camera(float fov){
+    public Camera(float fov, long window){
         this.fov = fov;
+        mat = new Matrix4f();
+        buffer = BufferUtils.createFloatBuffer(16);
+        this.window = window;
     }
 
     public void setPos(Vector3f pos) {
         this.pos = pos;
     }
-    public void setRotX(float rotX) {
-        this.rotX = rotX;
-    }
-    public void setRotY(float rotY) {
-        this.rotY = rotY;
+    public void setRot(Vector3f v) {
+        this.rotX = v.x;
+        this.rotY = v.y;
     }
     public float getFov() {
         return fov;        
@@ -43,12 +46,17 @@ public class Camera {
         this.height = height;
     }
 
-    public void render(){
+    public void renderView(Player p){
+
+        setPos(p.getPos());
+        setRot(p.getRot());
+
+
         glMatrixMode(GL_PROJECTION);
 
         glMatrixMode(GL_PROJECTION);
         glLoadMatrixf(mat.setPerspective(
-            (float) Math.toRadians(fov), 
+            (float) Math.toRadians((float)Math.toRadians(fov)), 
             (float) width / height, clipNear, clipFar).get(buffer));
 
         glMatrixMode(GL_MODELVIEW);
