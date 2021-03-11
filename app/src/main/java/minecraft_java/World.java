@@ -3,6 +3,7 @@ package minecraft_java;
 import java.util.HashMap;
 
 public class World {
+    private HashMap<Key, Chunk> chunks;
     private HashMap<Key, Chunk> loadedChunks;
     private HashMap<Key, Chunk> unloadedChunks;
     private int chunkSize = 16;
@@ -34,6 +35,12 @@ public class World {
             oldPlayerChunk = playerChunk;
             loadNewChunks(p);
         }
+    }
+
+    public int getBlock(Key k, int x, int y, int z){
+        Chunk c = chunks.get(k);
+        if(c != null) return c.getBlocks()[x][y][z];
+        return -1;
     }
 
     private Key getPlayerChunk(Player p){
@@ -71,7 +78,9 @@ public class World {
                     }
                     else{
                         //System.out.println("Generating new chunk " + k.toString());
-                        loadedChunks.put(k, TerrainGenerator.generateChunk(k, chunkSize, chunkHeight));
+                        Chunk chunk = TerrainGenerator.generateChunk(k, chunkSize, chunkHeight);
+                        loadedChunks.put(k, chunk);
+                        chunks.put(k, chunk);
                         //System.out.println("loadedChunks: " + getSize());
                     }
                 } else if (!(distanceToPlayer(k, p) > renderDistance)){ //loaded and should be

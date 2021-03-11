@@ -36,7 +36,7 @@ public class Chunk {
 
     public void setBlocks(int[][][] blocks) {
         this.blocks = blocks;
-        updateMesh();
+        //updateMesh();
     }
 
     public int getBlock(int x, int y, int z) {

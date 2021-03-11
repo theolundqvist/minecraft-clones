@@ -46,9 +46,9 @@ REFACTOR
 
 
 DONE
-THEO - * APP
-THEO - * change speed with scrollwheel,
-THEO - * first person, 
+THEO - * refactor APP
+THEO - * change speed with scrollwheel
+THEO - * first person
 
 */ 
 
