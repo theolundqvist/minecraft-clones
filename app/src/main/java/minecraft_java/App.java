@@ -63,6 +63,7 @@ public class App {
 
 	private World world;
 	private Player player;
+	private Camera cam;
 
 	private void setup() {
 		// SETTINGS
@@ -79,6 +80,8 @@ public class App {
 
 		world = new World(16);
 		player = new Player();
+		cam = new Camera(45, window);
+		cam.updateCanvasSize(width, height);
 
 
 	}
@@ -86,11 +89,12 @@ public class App {
 	private void update(){
 		handleKeyEvents();
 		world.updateChunks(player);
-		//player.draw();
-
+		
 		glBegin(GL_QUADS);
-			world.draw();
+		world.draw();
 		glEnd();
+
+		cam.renderView(player);
 	}
 
 	private long lastTime = 0;
@@ -98,7 +102,7 @@ public class App {
 		long thisTime = System.nanoTime();
 		float diff = (float) ((thisTime - lastTime) / 1E9);
 		lastTime = thisTime;
-		player.setRelativeSpeed(diff * player.getMovementSpeed());
+		player.setTimeDelta(diff);
 
 		// if (keyDown[GLFW_KEY_LEFT_SHIFT])
 		// 	move *= 2.0f;
@@ -137,6 +141,7 @@ public class App {
 			if (w > 0 && h > 0) {
 				width = w;
 				height = h;
+				cam.updateCanvasSize(width, height);
 			}
 		});
 		glfwSetCursorPosCallback(window, (win, x, y) -> {
