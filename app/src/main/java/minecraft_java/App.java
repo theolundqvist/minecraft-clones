@@ -42,7 +42,7 @@ PLAYER
 * collisions
 
 REFACTOR
-
+* olika paket
 
 
 DONE
@@ -59,6 +59,7 @@ public class App {
 	private float mouseX = 0.0f, mouseY = 0.0f;
 
 	private boolean[] keyDown = new boolean[GLFW_KEY_LAST + 1];
+	private float[] skyColor = new float[]{0.8f, 0.8f, 0.8f};
 
 
 	double[][] heightMap = new double[20][20];
@@ -73,19 +74,32 @@ public class App {
 		System.out.println("Press ENTER to change the center position");
 		System.out.println("Scroll the mouse-wheel to zoom in/out");
 
-		glClearColor(0.9f, 0.9f, 0.9f, 1.0f); // BACKGRUNDSFÄRGEN
+		glClearColor(skyColor[0], skyColor[1], skyColor[2], 1); // BACKGRUNDSFÄRGEN
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // MUSPEKARE SYNLIG ELLER EJ, disable i meny
 		glEnable(GL_DEPTH_TEST); // ???
 		glEnable(GL_CULL_FACE); // RITA BARA FRAMSIDAN AV TRIANGLAR
 		glfwSwapInterval(1); // VSYNC
 		bindKeyEvents();
-
-		//drawBlock(3, 1, 3, new Vector3f(0,0,0));
-
+		
 		world = new World(16);
 		player = new Player(0, 55, 0);
 		cam = new Camera(65, window);
 		cam.updateCanvasSize(width, height);
+
+
+		//FOG
+		glEnable(GL_FOG);
+		glFogi(GL_FOG_MODE, GL_LINEAR);
+		glFogfv(GL_FOG_COLOR, skyColor);
+		glHint (GL_FOG_HINT, GL_NICEST);
+		glFogf (GL_FOG_DENSITY, 0.3f);
+		//glFogf(GL_FOG_START, 20f);
+		//glFogf(GL_FOG_END, 25f);
+		glFogf(GL_FOG_START, (world.getRenderDistance()-1.5f)*world.getChunkSize());
+		glFogf(GL_FOG_END, (world.getRenderDistance()-1f) * world.getChunkSize());
+
+		//drawBlock(3, 1, 3, new Vector3f(0,0,0));
+
 
 
 	}

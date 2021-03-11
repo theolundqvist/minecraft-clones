@@ -18,8 +18,15 @@ public class World {
     public int getSize(){
         return loadedChunks.size();
     }
+    public int getChunkSize() {
+        return chunkSize;
+    }
     public Chunk getChunk(Key k){
         return loadedChunks.get(k);
+    }
+
+    public int getRenderDistance() {
+        return renderDistance;
     }
 
     public void draw(){
