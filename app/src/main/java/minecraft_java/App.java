@@ -14,7 +14,7 @@ import org.lwjgl.opengl.*;
 TODO:
 
 WORLD
-* sammanfoga chunks, om chunken vid sidan inte finns, kör TerrainGenerator på den x,z koodinaten utan att spara värdet. men då fuckar träd upp?
+* sammanfoga chunks, om chunken vid sidan inte finns, kör TerrainGenerator på den x,z koordinaten utan att spara värdet. men då fuckar träd upp?
 * ett block kan sparas som en enda byte
 * ta bort mesh från unloaded chunks när vi når ett visst antal
 * spara ändringar i en chunk kan man antingen spara hela chunken som den är eller bara ändringar; generera + ändringar
@@ -22,7 +22,6 @@ WORLD
 * variabel höjd. (gör chunken lika hög som högsta blocket i heightmap?) (chunk innehåller chunklets? 16x16x16)
 
 RENDERING - LUDVIG
-* ladda chunks i en cirkel
 * rendera bara chunks där spelaren tittar. i en kon från kameran med theta = fov
 
 UTSEENDE
@@ -49,6 +48,8 @@ DONE
 THEO - * APP
 THEO - * change speed with scrollwheel,
 THEO - * first person, 
+
+LUDVIG - * ladda chunks i en cirkel
 
 */ 
 
