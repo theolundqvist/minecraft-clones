@@ -26,7 +26,6 @@ RENDERING - LUDVIG
 * rendera bara chunks där spelaren tittar. i en kon från kameran med theta = fov
 
 UTSEENDE
-* dimma,
 * texturer
 * bättre ljussättning top-sida-botten 0.6-0.4-0.2 ish. (dir.y = (1, 0, -1)).
 * solljus, luftblock med block över ritar skugga på närmaste blocket under.
@@ -46,6 +45,7 @@ REFACTOR
 
 
 DONE
+THEO - * dimma,
 THEO - * APP
 THEO - * change speed with scrollwheel,
 THEO - * first person, 
@@ -99,9 +99,6 @@ public class App {
 		glFogf(GL_FOG_END, (world.getRenderDistance()-1f) * world.getChunkSize());
 
 		//drawBlock(3, 1, 3, new Vector3f(0,0,0));
-
-
-
 	}
 
 	private void render() {
