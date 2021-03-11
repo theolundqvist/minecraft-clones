@@ -72,32 +72,37 @@ public class App {
 		System.out.println("Scroll the mouse-wheel to zoom in/out");
 
 		glClearColor(0.9f, 0.9f, 0.9f, 1.0f); // BACKGRUNDSFÄRGEN
-	//	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // MUSPEKARE SYNLIG ELLER EJ, disable i meny
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // MUSPEKARE SYNLIG ELLER EJ, disable i meny
 		glEnable(GL_DEPTH_TEST); // ???
 		glEnable(GL_CULL_FACE); // RITA BARA FRAMSIDAN AV TRIANGLAR
 		glfwSwapInterval(1); // VSYNC
 		bindKeyEvents();
 
+		//drawBlock(3, 1, 3, new Vector3f(0,0,0));
+
 		world = new World(16);
-		player = new Player();
+		player = new Player(0, 55, 0);
 		cam = new Camera(45, window);
 		cam.updateCanvasSize(width, height);
 
 
 	}
 
+	private void render() {
+		cam.renderView(player);
+	}
+
 	private void update(){
 		handleKeyEvents();
+		//System.out.println(player.getPos().toString());
 		world.updateChunks(player);
 		
 		glBegin(GL_QUADS);
 		world.draw();
 		glEnd();
-
-		cam.renderView(player);
 	}
 
-	private long lastTime = 0;
+	private long lastTime = System.nanoTime();
 	private void handleKeyEvents() {
 		long thisTime = System.nanoTime();
 		float diff = (float) ((thisTime - lastTime) / 1E9);
@@ -108,6 +113,7 @@ public class App {
 		// 	move *= 2.0f;
 		// if (keyDown[GLFW_KEY_LEFT_CONTROL])
 		// 	move *= 0.5f;
+		player.setRotation(mouseX, mouseY);
 
 		if (keyDown[GLFW_KEY_W])
 			player.move(player.FORWARDS);
@@ -118,7 +124,6 @@ public class App {
 		if (keyDown[GLFW_KEY_D])
 			player.move(player.RIGHT);
 
-		player.setRotation(mouseX, mouseY);
 	}
 
 	public static void drawBlock(float x, float y, float z, Vector3f color){
@@ -145,10 +150,8 @@ public class App {
 			}
 		});
 		glfwSetCursorPosCallback(window, (win, x, y) -> {
-			if (glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_1) == GLFW_PRESS) {
-				mouseX = (float) x / width;
-				mouseY = (float) y / height;
-			}
+			mouseX = (float) x / width;
+			mouseY = (float) y / height;
 		});
 		//CHANGE MOVEMENT SPEED
 		glfwSetScrollCallback(window, (win, x, y) -> {
@@ -186,15 +189,20 @@ public class App {
 		setup();
 
 		while (!glfwWindowShouldClose(window)) {
+
+			render();
+
 			glViewport(0, 0, width, height);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			
 			update();
-
+			
 			glfwSwapBuffers(window);
 			glfwPollEvents();
 		}
 	}
+
+
 
 	public static void main(String[] args) {
 		new App().init();

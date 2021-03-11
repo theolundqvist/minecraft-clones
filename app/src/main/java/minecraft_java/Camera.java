@@ -34,7 +34,7 @@ public class Camera {
     }
     public void setRot(Vector3f v) {
         this.rotX = v.x;
-        this.rotY = v.y;
+        this.rotY = v.z;
     }
     public float getFov() {
         return fov;        
@@ -50,13 +50,13 @@ public class Camera {
 
         setPos(p.getPos());
         setRot(p.getRot());
+        mat = p.getMat();
 
 
         glMatrixMode(GL_PROJECTION);
 
-        glMatrixMode(GL_PROJECTION);
         glLoadMatrixf(mat.setPerspective(
-            (float) Math.toRadians((float)Math.toRadians(fov)), 
+            (float) Math.toRadians(fov), 
             (float) width / height, clipNear, clipFar).get(buffer));
 
         glMatrixMode(GL_MODELVIEW);

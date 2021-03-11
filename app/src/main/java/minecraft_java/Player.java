@@ -1,11 +1,12 @@
 package minecraft_java;
 
+import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 public class Player {
     private Vector3f pos;
     private Vector3f rot;
-    private float movementSpeed = 1f;
+    private float movementSpeed = 5f;
 
     final byte FORWARDS = 1;
     final byte BACKWARDS = 2;
@@ -37,29 +38,39 @@ public class Player {
         App.drawBlock(pos.x, pos.y+1, pos.z, new Vector3f(0, 0, 0));
     }
 
+    Matrix4f mat = new Matrix4f();
+    
     private float relativeSpeed;
     public void move(byte DIR) {
+        
+        //Vettefan va detta gör
+        Vector3f FB = new Vector3f();
+        Vector3f RL = new Vector3f();
+        mat.positiveZ(FB).negate().mul(relativeSpeed);
+        FB.y = 0.0f; // <- restrict movement on XZ plane
+        mat.positiveX(RL).mul(relativeSpeed);
+
         switch (DIR) {
             case FORWARDS:
-                pos.add(rotNorm().mul(relativeSpeed));
+                pos.add(FB);
                 break;
 
             case BACKWARDS:
-                pos.add(rotNorm().negate().mul(relativeSpeed));
+                pos.sub(FB);
                 break;
         
             case LEFT:
-                pos.add(rotNorm().rotateY((float)Math.PI/2).mul(relativeSpeed));
+                pos.sub(RL);
                 break;
 
             case RIGHT:
-                pos.add(rotNorm().rotateY((float) -Math.PI / 2).mul(relativeSpeed));
+                pos.add(RL);
                 break;
         }
     }
 
-    private Vector3f rotNorm(){
-        return new Vector3f(rot).normalize();
+    public Matrix4f getMat(){
+        return mat;
     }
 
     public void setTimeDelta(float f) {
@@ -67,7 +78,7 @@ public class Player {
     }
 
     public void setRotation(float mouseX, float mouseY) {
-        rot = new Vector3f(mouseX, 0, mouseY);
+        rot = new Vector3f(mouseY, 0, mouseX);
     }
 
     public float getMovementSpeed() {
