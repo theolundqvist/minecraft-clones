@@ -4,13 +4,8 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL46.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
-import java.nio.Buffer;
-import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
-import org.joml.Math;
-import org.joml.Matrix4f;
-import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.*;
@@ -89,10 +84,8 @@ public class App {
 	}
 
 	private void update(){
-
 		handleKeyEvents();
 		world.updateChunks(player);
-
 		//player.draw();
 
 		glBegin(GL_QUADS);
@@ -198,7 +191,7 @@ public class App {
 		}
 	}
 
-	public void main(String[] args) {
+	public static void main(String[] args) {
 		new App().init();
 	}
 

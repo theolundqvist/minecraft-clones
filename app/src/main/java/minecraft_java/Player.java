@@ -6,13 +6,14 @@ public class Player {
     private Vector3f pos;
     private Vector3f moveDir;
     private Vector3f lookDir;
+    private Camera cam;
 
     final byte FORWARDS = 1;
     final byte BACKWARDS = 2;
     final byte LEFT = 3;
     final byte RIGHT = 4;
 
-
+    
 
     public Player() {
         pos = new Vector3f(0f, 1f, 0f);
@@ -39,6 +40,7 @@ public class Player {
         //App.drawBlock(pos.x, pos.y+1, pos.z, new Vector3f(0, 0, 0));
     }
 
+    private 
     public void move(byte DIR) {
         switch (DIR) {
             case FORWARDS:
