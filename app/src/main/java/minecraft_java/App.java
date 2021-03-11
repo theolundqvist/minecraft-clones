@@ -85,43 +85,19 @@ public class App {
 		world = new World(16);
 		player = new Player();
 
-		// for (int i = 0; i < heightMap.length; i++) {
-		// 	for (int j = 0; j < heightMap[i].length; j++) {
-		// 		heightMap[i][j] = TerrainGenerator.getBlockHeight(i, j);
-		// 		// heightMap[i][j] = Math.random() * 5;
-		// 	}
-		// }
 
 	}
 
 	private void update(){
 
-		//player.setPos(player.getPos().add(new Vector3f(0.1f,0,0)));
 		handleKeyEvents();
 		world.updateChunks(player);
-		//System.out.println(world.getSize());
-		//world.printDebugData();
-		player.draw();
+
+		//player.draw();
 
 		glBegin(GL_QUADS);
 			world.draw();
 		glEnd();
-
-		// float low = TerrainGenerator.lowestValue;
-		// float amp = TerrainGenerator.amplitude*2;
-
-		// for (int x = 0; x < heightMap.length; x++) {
-		// 	for (int z = 0; z < heightMap[x].length; z++) {	
-
-		// 		float height = (float)heightMap[x][z];
-
-		// 		float c = (height-low)/amp;
-
-		// 		drawBlock(x, (int)height, z, 
-		// 		new Vector3f(c,c,c));
-		// 	}
-		// }
-		//printFPS();
 	}
 
 	private long lastTime = 0;
@@ -148,7 +124,7 @@ public class App {
 		player.setRotation(mouseX, mouseY);
 	}
 
-	public void drawBlock(float x, float y, float z, Vector3f color){
+	public static void drawBlock(float x, float y, float z, Vector3f color){
 		Vector3f mid = new Vector3f(x, y, z);
 		Vector3f offset = new Vector3f(1, 0, 0);
 		Vector3f[] dirs = MeshEngine.getAllDir();
@@ -188,10 +164,8 @@ public class App {
 			if (k == GLFW_KEY_ESCAPE && a == GLFW_RELEASE)
 				glfwSetWindowShouldClose(window, true);
 
-			if (a == GLFW_PRESS || a == GLFW_REPEAT)
-				keyDown[k] = true;
-			else
-				keyDown[k] = false;
+			if (a == GLFW_PRESS || a == GLFW_REPEAT) keyDown[k] = true;
+			else keyDown[k] = false;
 				
 		});
 	}
