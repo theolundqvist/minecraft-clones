@@ -40,7 +40,8 @@ public class Player {
         //App.drawBlock(pos.x, pos.y+1, pos.z, new Vector3f(0, 0, 0));
     }
 
-    private 
+    //private float relativeSpeed();
+
     public void move(byte DIR) {
         switch (DIR) {
             case FORWARDS:
@@ -62,7 +63,7 @@ public class Player {
     public void setRelativeSpeed(float f) {
     }
 
-
-
-
+    public Camera getCam(){
+        return cam;
+    }
 }

@@ -9,6 +9,10 @@ public class Key {
         this.z = z;
     }
 
+    public Key subtract(Key k){
+        return new Key(x - k.x, z - k.z);
+    }
+
     @Override
     public boolean equals(Object o) {
         if(this == o) return true;

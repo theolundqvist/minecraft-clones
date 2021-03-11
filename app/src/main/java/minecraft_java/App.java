@@ -71,7 +71,7 @@ public class App {
 		System.out.println("Scroll the mouse-wheel to zoom in/out");
 
 		glClearColor(0.9f, 0.9f, 0.9f, 1.0f); // BACKGRUNDSFÄRGEN
-		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // MUSPEKARE SYNLIG ELLER EJ, disable i meny
+	//	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // MUSPEKARE SYNLIG ELLER EJ, disable i meny
 		glEnable(GL_DEPTH_TEST); // ???
 		glEnable(GL_CULL_FACE); // RITA BARA FRAMSIDAN AV TRIANGLAR
 		glfwSwapInterval(1); // VSYNC
