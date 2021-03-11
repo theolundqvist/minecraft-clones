@@ -33,6 +33,9 @@ public class Camera {
     public void setRotY(float rotY) {
         this.rotY = rotY;
     }
+    public float getFov() {
+        return fov;        
+    }
 
 
     public void updateCanvasSize(int width, int height){
