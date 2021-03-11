@@ -84,4 +84,8 @@ public class Player {
     public float getMovementSpeed() {
         return movementSpeed;
     }
+    
+    public void setMovementSpeed(float movementSpeed) {
+        this.movementSpeed = movementSpeed;
+    }
 }

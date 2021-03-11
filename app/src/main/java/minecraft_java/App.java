@@ -156,9 +156,9 @@ public class App {
 		//CHANGE MOVEMENT SPEED
 		glfwSetScrollCallback(window, (win, x, y) -> {
 			if (y > 0) {
-				//zoom /= 1.1f;
+				player.setMovementSpeed(player.getMovementSpeed()/1.1f);
 			} else {
-				//zoom *= 1.1f;
+				player.setMovementSpeed(player.getMovementSpeed() * 1.1f);
 			}
 		});
 		glfwSetKeyCallback(window, (win, k, s, a, m) -> {
