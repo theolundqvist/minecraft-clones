@@ -15,7 +15,7 @@ class MeshEngine {
         int[][][] blocks = chunk.getBlocks();
         for (int x = 0; x < blocks.length; x++) {
             for (int y = 1; y < blocks[x].length-1; y++) {
-                for (int z = 0; z < blocks[x][y].length; z++) {
+                for (int z = 0; z < blocks[x][y].length-1; z++) {
                     //FÖR VARJE BLOCK FÖRUTOM KANTERNA
                     int block = blocks[x][y][z];
                     if(block == 0){
@@ -24,10 +24,9 @@ class MeshEngine {
                             Vector3f otherPos = new Vector3f(x + dir.x, y + dir.y, z + dir.z);
                             if (otherPos.x <= 0 
                             ||  otherPos.x >= blocks[x][y].length 
-                            ||  otherPos.y <= blocks[x][y].length
-                            ||  otherPos.y >= blocks[x][y].length){
-
-
+                            ||  otherPos.z <= 0
+                            ||  otherPos.z >= blocks[x][y].length){
+                                
                             }else{
                                 int other = blocks[(int)otherPos.x][(int)otherPos.y][(int)otherPos.z];
                                 otherPos.add(worldOffset);
