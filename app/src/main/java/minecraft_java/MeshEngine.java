@@ -13,19 +13,27 @@ class MeshEngine {
         Vector3f color = new Vector3f(0.4f, 0.6f, 0.4f); //TEMP
 
         int[][][] blocks = chunk.getBlocks();
-        for (int x = 1; x < blocks.length-1; x++) {
+        for (int x = 0; x < blocks.length; x++) {
             for (int y = 1; y < blocks[x].length-1; y++) {
-                for (int z = 1; z < blocks[x][y].length - 1; z++) {
+                for (int z = 0; z < blocks[x][y].length; z++) {
                     //FÖR VARJE BLOCK FÖRUTOM KANTERNA
                     int block = blocks[x][y][z];
                     if(block == 0){
                         Vector3f[] dirs = getAllDir();
                         for (Vector3f dir : dirs) {
                             Vector3f otherPos = new Vector3f(x + dir.x, y + dir.y, z + dir.z);
-                            int other = blocks[(int)otherPos.x][(int)otherPos.y][(int)otherPos.z];
-                            otherPos.add(worldOffset);
-                            if (other != 0) {
-                                quads.add(new CubeFace(otherPos.add(dir.negate().div(2)), dir, new Vector3f(color).add(dir.div(8))));
+                            if (otherPos.x <= 0 
+                            ||  otherPos.x >= blocks[x][y].length 
+                            ||  otherPos.y <= blocks[x][y].length
+                            ||  otherPos.y >= blocks[x][y].length){
+
+
+                            }else{
+                                int other = blocks[(int)otherPos.x][(int)otherPos.y][(int)otherPos.z];
+                                otherPos.add(worldOffset);
+                                if (other != 0) {
+                                    quads.add(new CubeFace(otherPos.add(dir.negate().div(2)), dir, new Vector3f(color).add(dir.div(8))));
+                                }
                             }
                         }
                     }
