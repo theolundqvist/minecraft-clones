@@ -16,7 +16,11 @@ public class Chunk {
         setBlocks(blocks);
     }
 
-    private void updateMesh(){
+    public boolean hasMesh(){
+        return meshData != null;
+    }
+
+    public void updateMesh(){
         meshData = MeshEngine.createMesh(this);
     }
 
@@ -25,6 +29,7 @@ public class Chunk {
     }
 
     public void draw(){
+        if (meshData == null) return;
         for (CubeFace q : meshData) {
             q.draw();
         }

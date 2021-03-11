@@ -1,6 +1,7 @@
 package minecraft_java;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class World {
     private HashMap<Key, Chunk> chunks;
@@ -8,12 +9,13 @@ public class World {
     private HashMap<Key, Chunk> unloadedChunks;
     private int chunkSize = 16;
     private int chunkHeight = 64;
-    private int renderDistance = 4;
+    private int renderDistance = 3;
 
     public World(int chunkSize) {
         this.chunkSize = chunkSize;
         loadedChunks = new HashMap<>();
         unloadedChunks = new HashMap<>();
+        chunks = new HashMap<>();
     }
 
     public int getSize(){
@@ -65,8 +67,8 @@ public class World {
         Key pk = getPlayerChunk(p);
         HashMap<Key, Chunk> toUnload = new HashMap<Key, Chunk>(loadedChunks);
         //om new Key inte existerar put(new chunk)
-        for (int i = -renderDistance; i <= renderDistance; i++) {
-            for (int j = -renderDistance; j <= renderDistance; j++) {
+        for (int i = -(renderDistance+1); i <= renderDistance+1; i++) {
+            for (int j = -(renderDistance+1); j <= renderDistance+1; j++) {
                 Key k = new Key(pk.x + i, pk.z + j);
                 //Not loaded but should be
                 if (!(loadedChunks.containsKey(k)) && distanceToPlayer(k, p) <= renderDistance){
@@ -83,6 +85,9 @@ public class World {
                         chunks.put(k, chunk);
                         //System.out.println("loadedChunks: " + getSize());
                     }
+                } else if (!loadedChunks.containsKey(k) && distanceToPlayer(k, p) > renderDistance){
+                    Chunk chunk = TerrainGenerator.generateChunk(k, chunkSize, chunkHeight);
+                    chunks.put(k, chunk);
                 } else if (!(distanceToPlayer(k, p) > renderDistance)){ //loaded and should be
                     toUnload.remove(k);
                 }
@@ -92,6 +97,16 @@ public class World {
         unloadedChunks.putAll(toUnload);
         toUnload.keySet().forEach(key -> loadedChunks.remove(key));
         //toUnload.keySet().forEach(key -> System.out.println("Unloading chunk " + key.toString()));
+    
+        //Load unloaded MeshMaps
+        for(Map.Entry<Key, Chunk> entry : loadedChunks.entrySet()){
+            //Key k = entry.getKey();
+            Chunk c = entry.getValue();
+            if (!c.hasMesh()){
+                c.updateMesh();
+            }
+        }
+
     }
 
     public void printDebugData() {
