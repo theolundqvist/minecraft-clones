@@ -6,7 +6,7 @@ import java.util.HashMap;
 public class World {
     private HashMap<Key, Chunk> loadedChunks;
     private HashMap<Key, Chunk> unloadedChunks;
-    private int chunkSize;
+    private int chunkSize = 16;
     private int chunkHeight = 64;
     private int renderDistance = 5;
 
@@ -19,18 +19,12 @@ public class World {
     public int getSize(){
         return loadedChunks.size();
     }
-
-    public void printDebugData() {
-        System.out.println("\nCurrently loaded: " +getSize());
-        System.out.println("Total generated: " + (getSize() + unloadedChunks.size()));
-        System.out.println("Size in ram estimate:\nBlockdata: " 
-        + (getSize() + unloadedChunks.size())*16*16*64*4/1E6 + "MB\n" +
-        "Meshdata: " + (getSize() + unloadedChunks.size())*500*(12+16*16*3)*4/1E6 + "MB");
-    }
-
     public Chunk getChunk(Key k){
         return loadedChunks.get(k);
     }
+
+
+
 
     public void draw(){
         loadedChunks.values().forEach((Chunk c) -> c.draw());
@@ -46,6 +40,8 @@ public class World {
         }
     }
 
+
+    
     private Key getPlayerChunk(Player p){
         float x = p.getPos().x, z = p.getPos().z;
         x = x + x/Math.abs(x) * chunkSize/2;
@@ -53,6 +49,7 @@ public class World {
 
         return new Key((int) x/chunkSize, (int) z/chunkSize);
     }
+
 
     private void loadNewChunks(Player p){
         printDebugData();
@@ -84,5 +81,11 @@ public class World {
         //toUnload.keySet().forEach(key -> System.out.println("Unloading chunk " + key.toString()));
     }
 
-
+    public void printDebugData() {
+        System.out.println("\nCurrently loaded: " + getSize());
+        System.out.println("Total generated: " + (getSize() + unloadedChunks.size()));
+        System.out.println("Size in ram estimate:\nBlockdata: "
+                + (getSize() + unloadedChunks.size()) * 16 * 16 * 64 * 4 / 1E6 + "MB\n" + "Meshdata: "
+                + (getSize() + unloadedChunks.size()) * 500 * (12 + 16 * 16 * 3) * 4 / 1E6 + "MB");
+    }
 }
