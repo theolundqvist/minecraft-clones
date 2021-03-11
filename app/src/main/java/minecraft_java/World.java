@@ -7,7 +7,7 @@ public class World {
     private HashMap<Key, Chunk> unloadedChunks;
     private int chunkSize = 16;
     private int chunkHeight = 64;
-    private int renderDistance = 2;
+    private int renderDistance = 4;
 
     public World(int chunkSize) {
         this.chunkSize = chunkSize;
@@ -74,7 +74,7 @@ public class World {
                         loadedChunks.put(k, TerrainGenerator.generateChunk(k, chunkSize, chunkHeight));
                         //System.out.println("loadedChunks: " + getSize());
                     }
-                } else { //loaded and should be
+                } else if (!(distanceToPlayer(k, p) > renderDistance)){ //loaded and should be
                     toUnload.remove(k);
                 }
             }
