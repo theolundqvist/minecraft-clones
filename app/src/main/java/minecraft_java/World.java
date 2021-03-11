@@ -51,6 +51,13 @@ public class World {
         return new Key((int) x/chunkSize, (int) z/chunkSize);
     }
 
+    public float getHeightFromGround(Player p){
+        int[][][] blocks = loadedChunks.get(getPlayerChunk(p)).getBlocks();
+        for (int i = 0; i < ; i++) {
+            
+        }
+    }
+
     private float distanceToPlayer(Key k, Player p) {
         Key pk = k.subtract(getPlayerChunk(p));
         double x = (double) pk.x;

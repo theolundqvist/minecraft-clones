@@ -6,6 +6,7 @@ import static org.lwjgl.system.MemoryUtil.*;
 
 import java.nio.IntBuffer;
 
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.*;
@@ -96,8 +97,6 @@ public class App {
 		glFogf (GL_FOG_DENSITY, 0.3f);
 		//glFogf(GL_FOG_START, 20f);
 		//glFogf(GL_FOG_END, 25f);
-		glFogf(GL_FOG_START, (world.getRenderDistance()-1.5f)*world.getChunkSize());
-		glFogf(GL_FOG_END, (world.getRenderDistance()-1f) * world.getChunkSize());
 
 		//drawBlock(3, 1, 3, new Vector3f(0,0,0));
 	}
@@ -109,6 +108,10 @@ public class App {
 	private void update(){
 		handleKeyEvents();
 		//System.out.println(player.getPos().toString());
+		float playerHeightFromChunk = player.getPos().y - world.getPlayerChunk(player).getXZHeight(player.getPos().x, player.getPos().z);
+		glFogf(GL_FOG_START, new Vector2f((world.getRenderDistance() - 1.5f) * world.getChunkSize(), player.getPos().y).length());
+		glFogf(GL_FOG_END, 
+				new Vector2f((world.getRenderDistance() - 1f) * world.getChunkSize(), player.getPos().y + world.getPlayerKey(player)).length());
 		world.updateChunks(player);
 		
 		glBegin(GL_QUADS);
