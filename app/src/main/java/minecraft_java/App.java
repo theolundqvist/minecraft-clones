@@ -31,15 +31,16 @@ RENDERING - LUDVIG
 * rendera bara chunks där spelaren tittar. i en kon från kameran med theta = fov
 
 UTSEENDE
-* texturer
 * bättre ljussättning top-sida-botten 0.6-0.4-0.2 ish. (dir.y = (1, 0, -1)).
 * solljus, luftblock med block över ritar skugga på närmaste blocket under.
 * fackla. lista med artificella ljuskällor i chunk. färga alla block beroende på avstånd från dessa.
 
 
 GENERATION
-* snyggare generation, fler oktaver, (lager noise)
+* snyggare generation, fler oktaver, (flera lager noise)
 * olika blocktyper
+* träd
+* gräs
 
 
 PLAYER
@@ -50,6 +51,7 @@ REFACTOR
 
 
 DONE
+THEO - * texturer
 THEO - * dimma,
 THEO - * APP
 THEO - * change speed with scrollwheel,
