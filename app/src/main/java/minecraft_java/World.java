@@ -10,7 +10,7 @@ public class World {
     private HashMap<Key, Chunk> unloadedChunks;
     private int chunkSize = 16;
     private int chunkHeight = 64;
-    private int renderDistance = 4;
+    private int renderDistance = 6;
     private int waterLevel = 20;
 
     public World(int chunkSize) {

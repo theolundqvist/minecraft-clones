@@ -5,8 +5,8 @@ import org.joml.Vector2i;
 
 public final class TerrainGenerator {
     
-    static float scaleX = 0.1f;
-    static float scaleY = 0.1f;
+    static float scaleX = 0.02f;
+    static float scaleY = 0.02f;
     public static float amplitude = 5f;
     public static float lowestValue = 0f; //chunkHeight/2
 
