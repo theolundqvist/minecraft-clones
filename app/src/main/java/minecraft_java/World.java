@@ -2,17 +2,25 @@ package minecraft_java;
 
 import java.util.HashMap;
 
+import org.joml.Vector3f;
+import org.joml.Vector3i;
+
 public class World {
     private HashMap<Key, Chunk> loadedChunks;
     private HashMap<Key, Chunk> unloadedChunks;
     private int chunkSize = 16;
     private int chunkHeight = 64;
     private int renderDistance = 4;
+    private int waterLevel = 20;
 
     public World(int chunkSize) {
         this.chunkSize = chunkSize;
         loadedChunks = new HashMap<>();
         unloadedChunks = new HashMap<>();
+    }
+
+    public int getHeight() {
+        return chunkHeight;
     }
 
     public int getSize(){
@@ -35,7 +43,7 @@ public class World {
 
     private Key oldPlayerChunk;
     public void updateChunks(Player p){
-        Key playerChunk = getPlayerChunk(p);
+        Key playerChunk = keyFromWorldPos(p.getPos());
         //System.out.println(p.getPos().x / chunkSize + " : " + p.getPos().z / chunkSize);
         if(oldPlayerChunk == null || !oldPlayerChunk.equals(playerChunk)){
             oldPlayerChunk = playerChunk;
@@ -43,33 +51,53 @@ public class World {
         }
     }
 
-    private Key getPlayerChunk(Player p){
-        float x = p.getPos().x, z = p.getPos().z;
+    private Key keyFromWorldPos(Vector3f pos){
+        float x = pos.x, z = pos.z;
         x = x + x/Math.abs(x) * chunkSize/2;
         z = z + z/Math.abs(z) * chunkSize/2;
 
         return new Key((int) x/chunkSize, (int) z/chunkSize);
     }
 
-    public float getHeightFromGround(Player p){
-        int[][][] blocks = loadedChunks.get(getPlayerChunk(p)).getBlocks();
-        for (int i = 0; i < ; i++) {
-            
-        }
+    // public float getHeightFromGround(Player p){
+    //     Key k = keyFromWorldPos(p.getPos());
+    //     Chunk c = loadedChunks.get(k);
+    //     if(c == null) return -1;
+
+    //     Vector3f wPos = p.getPos();
+    //     Vector3i local = worldToLocal(wPos);
+
+    //     System.out.println(local.x + " : " + local.z);
+
+    //     for (int y = chunkHeight-1; y >= 0 ; y--) {
+    //         if(c.getBlock(local.x, y, local.z) != 0) return y;
+    //     }
+    //     return 0;
+    // }
+
+    public Vector3i worldToLocal(Vector3f w) {
+        return worldToLocal(new Vector3i(w, 2));
+    }
+    public Vector3i worldToLocal(Vector3i w){
+        return new Vector3i(w.x%chunkSize+chunkSize/2, w.y, w.z%chunkSize + chunkSize / 2);
+    }
+    
+    public Vector3i localToWorld(Key k, Vector3i l) {
+        return new Vector3i(l.x * k.x, l.y, l.z * k.z);
     }
 
     private float distanceToPlayer(Key k, Player p) {
-        Key pk = k.subtract(getPlayerChunk(p));
+        Key pk = k.subtract(keyFromWorldPos(p.getPos()));
         double x = (double) pk.x;
         double z = (double) pk.z;
-        return (float) Math.pow((Math.pow(x, 2)+Math.pow(z, 2)), 0.5);
+        return (float) Math.pow(x*x + z*z, 0.5);
     }
 
 
     private void loadNewChunks(Player p){
         printDebugData();
         //float fov = p.getCam().getFov();
-        Key pk = getPlayerChunk(p);
+        Key pk = keyFromWorldPos(p.getPos());
         HashMap<Key, Chunk> toUnload = new HashMap<Key, Chunk>(loadedChunks);
         //om new Key inte existerar put(new chunk)
         for (int i = -renderDistance; i <= renderDistance; i++) {

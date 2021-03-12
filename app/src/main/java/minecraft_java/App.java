@@ -94,9 +94,9 @@ public class App {
 		glFogi(GL_FOG_MODE, GL_LINEAR);
 		glFogfv(GL_FOG_COLOR, skyColor);
 		glHint (GL_FOG_HINT, GL_NICEST);
-		glFogf (GL_FOG_DENSITY, 0.3f);
-		//glFogf(GL_FOG_START, 20f);
-		//glFogf(GL_FOG_END, 25f);
+		//glFogf (GL_FOG_DENSITY, 0.3f);
+		glFogf(GL_FOG_START, 20f);
+		glFogf(GL_FOG_END, 25f);
 
 		//drawBlock(3, 1, 3, new Vector3f(0,0,0));
 	}
@@ -107,11 +107,12 @@ public class App {
 
 	private void update(){
 		handleKeyEvents();
+		
 		//System.out.println(player.getPos().toString());
-		float playerHeightFromChunk = player.getPos().y - world.getPlayerChunk(player).getXZHeight(player.getPos().x, player.getPos().z);
-		glFogf(GL_FOG_START, new Vector2f((world.getRenderDistance() - 1.5f) * world.getChunkSize(), player.getPos().y).length());
+		float playerHeight = player.getPos().y - world.getHeight()/2;
+		glFogf(GL_FOG_START, new Vector2f((world.getRenderDistance() - 1.5f) * world.getChunkSize(), playerHeight).length());
 		glFogf(GL_FOG_END, 
-				new Vector2f((world.getRenderDistance() - 1f) * world.getChunkSize(), player.getPos().y + world.getPlayerKey(player)).length());
+				new Vector2f((world.getRenderDistance() - 1f) * world.getChunkSize(), playerHeight).length());
 		world.updateChunks(player);
 		
 		glBegin(GL_QUADS);
