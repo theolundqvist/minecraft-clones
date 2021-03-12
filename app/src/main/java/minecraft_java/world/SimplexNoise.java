@@ -14,7 +14,7 @@
  * attribution is appreciated.
  *
  */
-package minecraft_java;
+package minecraft_java.world;
 
 
 public class SimplexNoise { // Simplex noise in 2D, 3D and 4D

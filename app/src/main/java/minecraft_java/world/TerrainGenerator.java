@@ -1,7 +1,4 @@
-package minecraft_java;
-import java.util.Arrays;
-
-import org.joml.Vector2i;
+package minecraft_java.world;
 
 public final class TerrainGenerator {
     

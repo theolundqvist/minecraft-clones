@@ -32,9 +32,14 @@ repositories {
 	  maven {
 		url "https://oss.sonatype.org/content/repositories/snapshots/"
 	}
+	flatDir {
+        dirs 'libs'
+    }
 }
 project.ext.jomlVersion = "1.10.0"
 dependencies {
+
+
 
 	compile "org.joml:joml:${jomlVersion}"
 
@@ -48,6 +53,10 @@ dependencies {
     implementation 'com.google.guava:guava:29.0-jre'
 
     	implementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
+
+
+	implementation files('libs/TWL.jar')
+
 
 	implementation "org.lwjgl:lwjgl"
 	implementation "org.lwjgl:lwjgl-assimp"

@@ -11,6 +11,11 @@ import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.*;
 
+import minecraft_java.entities.*;
+import minecraft_java.mesh.*;
+import minecraft_java.texture.*;
+import minecraft_java.world.*;
+
 /*
 TODO:
 
@@ -69,6 +74,7 @@ public class App {
 	private World world;
 	private Player player;
 	private Camera cam;
+	public static int tempTextureID;
 
 	private void setup() {
 		// SETTINGS
@@ -87,7 +93,10 @@ public class App {
 		player = new Player(0, 55, 0);
 		cam = new Camera(65, window);
 		cam.updateCanvasSize(width, height);
-
+		tempTextureID = TextureLoader.loadTexture(TextureLoader.loadImage("res/texture.png"));
+		
+		//TEXTURE
+		glEnable(GL_TEXTURE_2D);
 
 		//FOG
 		glEnable(GL_FOG);
@@ -104,7 +113,7 @@ public class App {
 
 	private void update(){
 		handleKeyEvents();
-
+		drawBlock(0, 0, 0, new Vector3f(0.5f,0.5f,0.5f));
 		drawFog();
 		world.updateChunks(player);
 		
@@ -159,8 +168,9 @@ public class App {
 		Vector3f offset = new Vector3f(1, 0, 0);
 		Vector3f[] dirs = MeshEngine.getAllDir();
 		for (Vector3f dir : dirs) {
-			CubeFace qd = new CubeFace(new Vector3f(x+dir.x/2,y+dir.y/2,z+dir.z/2), dir, color);
+			QuadMesh qd = new QuadMesh(new Vector3f(x+dir.x/2,y+dir.y/2,z+dir.z/2), dir, color);
 			glBegin(GL_QUADS);
+			
 				qd.draw();
 			glEnd();
 		}

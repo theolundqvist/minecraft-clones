@@ -1,9 +1,11 @@
-package minecraft_java;
+package minecraft_java.world;
 
 import java.util.HashMap;
 
 import org.joml.Vector3f;
 import org.joml.Vector3i;
+
+import minecraft_java.entities.Player;
 
 public class World {
     private HashMap<Key, Chunk> loadedChunks;
