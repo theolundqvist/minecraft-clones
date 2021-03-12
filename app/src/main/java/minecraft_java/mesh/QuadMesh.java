@@ -25,7 +25,6 @@ public class QuadMesh {
 
     private void calculateCorners(Vector3f pos, Vector3f dir){
         dir.normalize();
-        Vector3f up = new Vector3f(0, 1, 0);
         Vector3f side1 = new Vector3f().orthogonalize(dir).div(2);
 		Vector3f side2 = new Vector3f().orthogonalize(dir).cross(dir).div(2);
 		Vector3f corner = side1.add(side2).add(pos);
