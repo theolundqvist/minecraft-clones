@@ -93,10 +93,13 @@ public class App {
 		player = new Player(0, 55, 0);
 		cam = new Camera(65, window);
 		cam.updateCanvasSize(width, height);
-		tempTextureID = TextureLoader.loadTexture(TextureLoader.loadImage("res/texture.png"));
+		
+		TextureEngine.init();
 		
 		//TEXTURE
 		glEnable(GL_TEXTURE_2D);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		//FOG
 		glEnable(GL_FOG);
@@ -116,10 +119,8 @@ public class App {
 		drawBlock(0, 0, 0, new Vector3f(0.5f,0.5f,0.5f));
 		drawFog();
 		world.updateChunks(player);
-		
-		glBegin(GL_QUADS);
 		world.draw();
-		glEnd();
+
 	}
 
 	private void drawFog(){

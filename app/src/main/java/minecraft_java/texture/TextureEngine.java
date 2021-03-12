@@ -4,16 +4,20 @@ import java.awt.image.BufferedImage;
 
 import org.joml.Vector3f;
 
+
 public class TextureEngine {
-    BufferedImage textureImg;
+    static private int[] textures;
 
-    public static int air   = 0;
-    public static int grass = 1;
-    public static int dirt  = 2;
-    public static int stone = 3;
-
+    public static void init(){
+        BufferedImage textureImg = TextureLoader.loadImage("res/texture.png");
+        textures = TextureLoader.genTileMapTextureIDs(textureImg);
+    }
+    static int i = 0;
     public static int getTextureID(int blockID, Vector3f dir) {
-        return 0;
+        //Gör lite smarta grejer för att returnera top/sida/botten beroende på dir. 
+        //vissa block har bara en textur andra flera
+        //får nog hårdkoda detta
+        return textures[i++%256];//a[i++%(a.length-1)]];
     }  
 
 }

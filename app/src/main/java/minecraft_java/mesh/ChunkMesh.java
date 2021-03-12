@@ -17,11 +17,13 @@ public class ChunkMesh {
     public void draw(){
         int lastTextureId = -1;
         for (QuadMesh q : quads) {
-            if(lastTextureId != q.textureID) {
-                glBindTexture(GL_TEXTURE_2D, q.textureID);
-                lastTextureId = q.textureID;
-            }
+            //if(lastTextureId != q.textureID) {
+            glBindTexture(GL_TEXTURE_2D, q.textureID);
+                //lastTextureId = q.textureID;
+            //}
+            glBegin(GL_QUADS);
             q.draw();
+            glEnd();
             
         }
     }
