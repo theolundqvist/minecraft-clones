@@ -1,8 +1,8 @@
 package minecraft_java.world;
 
 public class Blocks {
-    private static int AIR  = 0;
-    private static int GRASS = 1;
-    private static int STONE = 2;
-    private static int DIRT = 3;
+    public static final int AIR  = 0;
+    public static final int GRASS = 1;
+    public static final int STONE = 2;
+    public static final int DIRT = 3;
 }

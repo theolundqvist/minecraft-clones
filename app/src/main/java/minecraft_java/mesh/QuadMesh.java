@@ -11,6 +11,7 @@ public class QuadMesh {
     public float[] color;
     public float[] normal;
     public int textureID;
+    private float[][] textureCoords;
 
     public QuadMesh(Vector3f pos, Vector3f dir, Vector3f c){
         color = new float[]{c.x, c.y, c.z};
@@ -24,6 +25,7 @@ public class QuadMesh {
 
     private void calculateCorners(Vector3f pos, Vector3f dir){
         dir.normalize();
+        Vector3f up = new Vector3f(0, 1, 0);
         Vector3f side1 = new Vector3f().orthogonalize(dir).div(2);
 		Vector3f side2 = new Vector3f().orthogonalize(dir).cross(dir).div(2);
 		Vector3f corner = side1.add(side2).add(pos);
@@ -36,20 +38,28 @@ public class QuadMesh {
             vertexData[i] = new float[]{corner.x, corner.y, corner.z};
         }
         normal = new float[]{dir.x, dir.y, dir.z};
+
+        //TEXTURE MAPPING
+        if(dir.z < 0 || dir.x > 0){
+            textureCoords = new float[][] { 
+                { 0, 0 }, 
+                { 0, 1 }, 
+                { 1, 1 }, 
+                { 1, 0 } };
+        }
+        else
+            textureCoords = new float[][] { 
+                { 1, 1 }, 
+                { 1, 0 }, 
+                { 0, 0 }, 
+                { 0, 1 } };
     }
 
     public void draw(){
         if(color != null) glColor3fv(color);
-        glTexCoord2f(0.0f, 0.0f);
-        glVertex3fv(vertexData[0]);
-        glTexCoord2f(1.0f, 0.0f);
-        glVertex3fv(vertexData[1]);
-        glTexCoord2f(1.0f, 1.0f);
-        glVertex3fv(vertexData[2]);
-        glTexCoord2f(0.0f, 1.0f);
-        glVertex3fv(vertexData[3]);
-        //for (float[] fs : vertexData) {
-            //glVertex3fv(fs);
-        //}
+        for (int i = 0; i < vertexData.length; i++) {
+            glTexCoord2fv(textureCoords[i]);
+            glVertex3fv(vertexData[i]);
+        }
     }
 }

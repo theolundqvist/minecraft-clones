@@ -3,7 +3,7 @@ package minecraft_java.texture;
 import java.awt.image.BufferedImage;
 
 import org.joml.Vector3f;
-
+import minecraft_java.world.Blocks;
 
 public class TextureEngine {
     static private int[] textures;
@@ -17,7 +17,16 @@ public class TextureEngine {
         //Gör lite smarta grejer för att returnera top/sida/botten beroende på dir. 
         //vissa block har bara en textur andra flera
         //får nog hårdkoda detta
-        return textures[i++%256];//a[i++%(a.length-1)]];
+        switch (blockID) {
+            case Blocks.GRASS:
+                if(dir.y == 0) blockID += 3;
+                else if(dir.y == -1) blockID += 2;
+                break;
+        
+            default:
+                break;
+        }
+        return textures[blockID-1];//a[i++%(a.length-1)]];
     }  
 
 }
