@@ -74,18 +74,21 @@ public class World {
                 if (!(loadedChunks.containsKey(k)) && distanceToPlayer(k, p) <= renderDistance){
                     if(unloadedChunks.containsKey(k)){
                         //System.out.println("Loading chunk from memory " + k.toString());
+                        //LADDA FRÅN MINNET
                         System.out.println(k);
                         loadedChunks.put(k, unloadedChunks.get(k));
                         unloadedChunks.remove(k);
                     }
                     else{
                         //System.out.println("Generating new chunk " + k.toString());
+                        //GEN NEW
                         Chunk chunk = TerrainGenerator.generateChunk(k, chunkSize, chunkHeight);
                         loadedChunks.put(k, chunk);
                         chunks.put(k, chunk);
                         //System.out.println("loadedChunks: " + getSize());
                     }
                 } else if (!loadedChunks.containsKey(k) && distanceToPlayer(k, p) > renderDistance){
+                    //??
                     Chunk chunk = TerrainGenerator.generateChunk(k, chunkSize, chunkHeight);
                     chunks.put(k, chunk);
                 } else if (!(distanceToPlayer(k, p) > renderDistance)){ //loaded and should be
