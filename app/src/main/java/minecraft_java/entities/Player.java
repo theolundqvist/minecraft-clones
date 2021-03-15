@@ -1,19 +1,21 @@
-package minecraft_java;
+package minecraft_java.entities;
 
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
+
+import minecraft_java.App;
 
 public class Player {
     private Vector3f pos;
     private Vector3f rot;
     private float movementSpeed = 5f;
 
-    final byte FORWARDS = 1;
-    final byte BACKWARDS = 2;
-    final byte LEFT = 3;
-    final byte RIGHT = 4;
-    final byte UP = 5;
-    final byte DOWN = 6;
+    final public byte FORWARDS = 1;
+    final public byte BACKWARDS = 2;
+    final public byte LEFT = 3;
+    final public byte RIGHT = 4;
+    final public byte UP = 5;
+    final public byte DOWN = 6;
 
 
 

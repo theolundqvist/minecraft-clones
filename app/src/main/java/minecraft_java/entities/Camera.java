@@ -1,4 +1,4 @@
-package minecraft_java;
+package minecraft_java.entities;
 
 import org.joml.Matrix4f;
 import org.joml.Vector3f;

@@ -1,12 +1,12 @@
-package minecraft_java;
-
-import java.util.ArrayList;
+package minecraft_java.world;
 
 import org.joml.Vector3f;
 
+import minecraft_java.mesh.ChunkMesh;
+
 public class Chunk {
     private int[][][] blocks;
-    public ArrayList<CubeFace> meshData;
+    public ChunkMesh mesh;
     private Key pos;
     private int size;
     
@@ -16,12 +16,20 @@ public class Chunk {
         setBlocks(blocks);
     }
 
+    public int getSize() {
+        return size;
+    }
+
+    public Key getKey() {
+        return pos;
+    }
+
     public boolean hasMesh(){
-        return meshData != null;
+        return mesh != null;
     }
 
     public void updateMesh(){
-        meshData = MeshEngine.createMesh(this);
+        mesh = new ChunkMesh(this);
     }
 
     public Vector3f getWorldOffset(){
@@ -29,10 +37,7 @@ public class Chunk {
     }
 
     public void draw(){
-        if (meshData == null) return;
-        for (CubeFace q : meshData) {
-            q.draw();
-        }
+        mesh.draw();
     }
 
     public int[][][] getBlocks() {

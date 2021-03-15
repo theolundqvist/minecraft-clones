@@ -1,4 +1,4 @@
-package minecraft_java;
+package minecraft_java.world;
 
 public class Key {
     public int x;
@@ -33,4 +33,5 @@ public class Key {
     public String toString() {
         return ("(" + x + ", " + z + ")");
     }
+
 }

@@ -6,15 +6,21 @@ import static org.lwjgl.system.MemoryUtil.*;
 
 import java.nio.IntBuffer;
 
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.*;
+
+import minecraft_java.entities.*;
+import minecraft_java.mesh.*;
+import minecraft_java.texture.*;
+import minecraft_java.world.*;
 
 /*
 TODO:
 
 WORLD
-* sammanfoga chunks, om chunken vid sidan inte finns, kör TerrainGenerator på den x,z koodinaten utan att spara värdet. men då fuckar träd upp?
+* sammanfoga chunks, om chunken vid sidan inte finns, kör TerrainGenerator på den x,z koordinaten utan att spara värdet. men då fuckar träd upp?
 * ett block kan sparas som en enda byte
 * ta bort mesh från unloaded chunks när vi når ett visst antal
 * spara ändringar i en chunk kan man antingen spara hela chunken som den är eller bara ändringar; generera + ändringar
@@ -22,33 +28,42 @@ WORLD
 * variabel höjd. (gör chunken lika hög som högsta blocket i heightmap?) (chunk innehåller chunklets? 16x16x16)
 
 RENDERING - LUDVIG
-* ladda chunks i en cirkel
 * rendera bara chunks där spelaren tittar. i en kon från kameran med theta = fov
 
 UTSEENDE
-* dimma,
-* texturer
 * bättre ljussättning top-sida-botten 0.6-0.4-0.2 ish. (dir.y = (1, 0, -1)).
 * solljus, luftblock med block över ritar skugga på närmaste blocket under.
 * fackla. lista med artificella ljuskällor i chunk. färga alla block beroende på avstånd från dessa.
 
 
 GENERATION
-* snyggare generation, fler oktaver, (lager noise)
+* snyggare generation, fler oktaver, (flera lager noise)
 * olika blocktyper
+* träd
+* gräs
 
 
 PLAYER
 * collisions
 
 REFACTOR
-
+* olika paket
 
 
 DONE
+<<<<<<< HEAD
 THEO - * refactor APP
 THEO - * change speed with scrollwheel
 THEO - * first person
+=======
+THEO - * texturer
+THEO - * dimma,
+THEO - * APP
+THEO - * change speed with scrollwheel,
+THEO - * first person, 
+>>>>>>> main
+
+LUDVIG - * ladda chunks i en cirkel
 
 */ 
 
@@ -59,6 +74,7 @@ public class App {
 	private float mouseX = 0.0f, mouseY = 0.0f;
 
 	private boolean[] keyDown = new boolean[GLFW_KEY_LAST + 1];
+	private float[] skyColor = new float[]{0.8f, 0.8f, 0.8f};
 
 
 	double[][] heightMap = new double[20][20];
@@ -66,6 +82,7 @@ public class App {
 	private World world;
 	private Player player;
 	private Camera cam;
+	public static int tempTextureID;
 
 	private void setup() {
 		// SETTINGS
@@ -73,21 +90,32 @@ public class App {
 		System.out.println("Press ENTER to change the center position");
 		System.out.println("Scroll the mouse-wheel to zoom in/out");
 
-		glClearColor(0.9f, 0.9f, 0.9f, 1.0f); // BACKGRUNDSFÄRGEN
+		glClearColor(skyColor[0], skyColor[1], skyColor[2], 1); // BACKGRUNDSFÄRGEN
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // MUSPEKARE SYNLIG ELLER EJ, disable i meny
 		glEnable(GL_DEPTH_TEST); // ???
 		glEnable(GL_CULL_FACE); // RITA BARA FRAMSIDAN AV TRIANGLAR
 		glfwSwapInterval(1); // VSYNC
 		bindKeyEvents();
-
-		//drawBlock(3, 1, 3, new Vector3f(0,0,0));
-
+		
 		world = new World(16);
 		player = new Player(0, 55, 0);
 		cam = new Camera(65, window);
 		cam.updateCanvasSize(width, height);
+		
+		TextureEngine.init();
+		
+		//TEXTURE
+		glEnable(GL_TEXTURE_2D);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+		//FOG
+		glEnable(GL_FOG);
+		glFogi(GL_FOG_MODE, GL_LINEAR);
+		glFogfv(GL_FOG_COLOR, skyColor);
+		glHint (GL_FOG_HINT, GL_NICEST);
 
+		//drawBlock(3, 1, 3, new Vector3f(0,0,0));
 	}
 
 	private void render() {
@@ -96,12 +124,19 @@ public class App {
 
 	private void update(){
 		handleKeyEvents();
-		//System.out.println(player.getPos().toString());
+		drawBlock(0, 0, 0, new Vector3f(0.5f,0.5f,0.5f));
+		drawFog();
 		world.updateChunks(player);
-		
-		glBegin(GL_QUADS);
 		world.draw();
-		glEnd();
+
+	}
+
+	private void drawFog(){
+		float playerHeight = player.getPos().y - world.getHeight() / 2;
+		glFogf(GL_FOG_START,
+				new Vector2f((world.getRenderDistance() - 1.5f) * world.getChunkSize(), playerHeight).length());
+		glFogf(GL_FOG_END,
+				new Vector2f((world.getRenderDistance() - 1.2f) * world.getChunkSize(), playerHeight).length());
 	}
 
 	private long lastTime = System.nanoTime();
@@ -142,8 +177,9 @@ public class App {
 		Vector3f offset = new Vector3f(1, 0, 0);
 		Vector3f[] dirs = MeshEngine.getAllDir();
 		for (Vector3f dir : dirs) {
-			CubeFace qd = new CubeFace(new Vector3f(x+dir.x/2,y+dir.y/2,z+dir.z/2), dir, color);
+			QuadMesh qd = new QuadMesh(new Vector3f(x+dir.x/2,y+dir.y/2,z+dir.z/2), dir, color);
 			glBegin(GL_QUADS);
+			
 				qd.draw();
 			glEnd();
 		}
