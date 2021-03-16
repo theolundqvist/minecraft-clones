@@ -34,4 +34,8 @@ public class Key {
         return ("(" + x + ", " + z + ")");
     }
 
+    public Key add(Key k) {
+        return new Key(x + k.x, z + k.z);
+    }
+
 }

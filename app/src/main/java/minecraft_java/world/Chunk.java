@@ -9,6 +9,7 @@ public class Chunk {
     public ChunkMesh mesh;
     private Key pos;
     private int size;
+    public World worldRef;
     
     public Chunk(int[][][] blocks, Key pos, int size) {
         this.pos = pos;
@@ -56,5 +57,9 @@ public class Chunk {
     public void setBlock(int x, int y, int z, int value) {
         this.blocks[x][y][z] = value;
         updateMesh();
+    }
+
+    public void setWorldRef(World world) {
+        worldRef = world;
     }
 }
