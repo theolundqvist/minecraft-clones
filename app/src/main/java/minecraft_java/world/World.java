@@ -58,10 +58,12 @@ public class World {
     }
 
     public int getBlockFromWorldPos(Vector3f v){
+
         Key k = keyFromWorldPos(v);
         Chunk c = chunks.get(k);
         if(c == null) return -1;
         Vector3i local = worldToLocal(v);
+        System.out.println("world: " + v + "\nlocal: " + local + "\nkey: " + k.toString());
         return c.getBlock(local.x, local.y, local.z);
     }
 
@@ -88,10 +90,10 @@ public class World {
     }
     public boolean hasNeighbors(Key k){
         return
-        chunks.containsKey(new Key(k.x + 1, k.z)) &&
-        chunks.containsKey(new Key(k.x - 1, k.z)) && 
-        chunks.containsKey(new Key(k.x, k.z + 1)) &&
-        chunks.containsKey(new Key(k.x, k.z - 1));
+        chunkExists(new Key(k.x + 1, k.z)) &&
+        chunkExists(new Key(k.x - 1, k.z)) && 
+        chunkExists(new Key(k.x, k.z + 1)) &&
+        chunkExists(new Key(k.x, k.z - 1));
     }
     public boolean chunkExists(Key k){
         return chunks.containsKey(k);
@@ -117,7 +119,7 @@ public class World {
         return worldToLocal(new Vector3i(w, 2));
     }
     public Vector3i worldToLocal(Vector3i w){
-        return new Vector3i(w.x / chunkSize + chunkSize/2, w.y, w.z / chunkSize + chunkSize / 2);
+        return new Vector3i(w.x % chunkSize + chunkSize/2, w.y, w.z % chunkSize + chunkSize / 2);
     }
     
     public Vector3f localToWorld(Key k, Vector3f l) {

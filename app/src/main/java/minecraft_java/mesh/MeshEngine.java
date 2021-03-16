@@ -10,12 +10,14 @@ public class MeshEngine {
     
     public static ArrayList<QuadMesh> createMesh(Chunk chunk){
         //OM ALLA CHUNKS RUNTOM FINNS ANNARS RETURN
-
+        if(!chunk.worldRef.hasNeighbors(chunk.getKey())) return null;
         ArrayList<QuadMesh> quads = new ArrayList<>();
+        
         Vector3f worldOffset = chunk.getWorldOffset();
 
 
         int[][][] blocks = chunk.getBlocks();
+        int count = 0;
         for (int x = 0; x < blocks.length; x++) {
             for (int y = 1; y < blocks[x].length-1; y++) {
                 for (int z = 0; z < blocks[x][y].length; z++) {
@@ -23,8 +25,8 @@ public class MeshEngine {
                     int block = blocks[x][y][z];
                     if(block != 0){
                         Vector3f[] dirs = getAllDir();
+                        Vector3f pos = new Vector3f(x, y, z);
                         for (Vector3f dir : dirs) {
-                            Vector3f pos = new Vector3f(x, y, z);
                             Vector3f otherPos = new Vector3f(x + dir.x, y + dir.y, z + dir.z);
                             int other;
                             if (otherPos.x < 0 
@@ -33,7 +35,12 @@ public class MeshEngine {
                             ||  otherPos.z >= chunk.getSize()){
                                 //UTANFÖR CHUNKEN
                                 //KOM ÅT BLOCKET I CHUNKEN BREDVID OM DEN FINNS
-                                other = chunk.worldRef.getBlockFromWorldPos(otherPos);
+                                
+                                //kraschar, index out of bounds
+                                other = chunk.worldRef.getBlockFromWorldPos(otherPos.add(worldOffset));
+                                
+                                //other = 1;
+                                count++;
                                 if(other == -1) return null;
                                 //Vector3f wp = World.localToWorld(chunk.getKey(), otherPos);
                                 //World.keyFromWorldPos(wp);
@@ -43,8 +50,11 @@ public class MeshEngine {
                             }
                             
                             if (other == 0) {
-                                pos.add(worldOffset);
-                                quads.add(new QuadMesh(pos.add(dir.div(2)), dir, block));
+                                quads.add(
+                                    new QuadMesh(
+                                        new Vector3f(pos)
+                                        .add(worldOffset)
+                                        .add(dir.div(2)), dir, block));
                             }
                         }
                     }
