@@ -23,6 +23,12 @@ public class World {
         loadedChunks = new HashMap<>();
         unloadedChunks = new HashMap<>();
         chunks = new HashMap<>();
+        System.out.println(worldToLocal(new Vector3f(0,0,0)));
+        System.out.println(worldToLocal(new Vector3f(-8,8,-9)));
+        System.out.println(worldToLocal(new Vector3f(16, 8, 8)));
+        System.out.println(worldToLocal(new Vector3f(-16, 8, 8)));
+        System.out.println(worldToLocal(new Vector3f(17, 8, 8)));
+        System.out.println(worldToLocal(new Vector3f(17, 8, 17)));
     }
 
     public int getHeight() {
@@ -62,7 +68,7 @@ public class World {
         Key k = keyFromWorldPos(v);
         Chunk c = chunks.get(k);
         if(c == null) return -1;
-        Vector3i local = worldToLocal(v);
+        Vector3i local = worldToLocal(k, v);
         System.out.println("world: " + v + "\nlocal: " + local + "\nkey: " + k.toString());
         return c.getBlock(local.x, local.y, local.z);
     }
@@ -114,12 +120,16 @@ public class World {
     //     }
     //     return 0;
     // }
-
     public Vector3i worldToLocal(Vector3f w) {
-        return worldToLocal(new Vector3i(w, 2));
+        return worldToLocal(keyFromWorldPos(w), new Vector3i(w, 2));
     }
-    public Vector3i worldToLocal(Vector3i w){
-        return new Vector3i(w.x % chunkSize + chunkSize/2, w.y, w.z % chunkSize + chunkSize / 2);
+    public Vector3i worldToLocal(Key k, Vector3f w) {
+        return worldToLocal(k, new Vector3i(w, 2));
+    }
+    public Vector3i worldToLocal(Key k, Vector3i w){
+        int iX = (k.x < 0) ? -1 : 1;
+        int iZ = (k.z < 0) ? -1 : 1;
+        return new Vector3i((w.x + chunkSize/2) - k.x*chunkSize + iX, w.y, (w.z + chunkSize / 2) - k.z*chunkSize + iZ);
     }
     
     public Vector3f localToWorld(Key k, Vector3f l) {
