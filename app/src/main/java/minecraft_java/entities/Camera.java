@@ -18,7 +18,6 @@ public class Camera {
     private Vector3f pos;
     private float rotX, rotY;
     private float clipNear = 0.5f, clipFar = 1000;
-    public Vector3f lookDir = new Vector3f();
 
     //WINDOW
     private long window;
@@ -67,10 +66,6 @@ public class Camera {
 
         glMatrixMode(GL_MODELVIEW);
         mat.identity().rotateX(rotX).rotateY(rotY).translate(-pos.x, -pos.y, -pos.z);
-
-        //get dir vector
-        p.setLookDir(new Vector3f(0, 0, 1).rotateX(-rotX).rotateY(-rotY).negate());
-
         
         glLoadMatrixf(mat.get(buffer));
     }

@@ -8,25 +8,27 @@ import minecraft_java.texture.TextureEngine;
 
 public class QuadMesh {
     public float[][] vertexData = new float[4][3];
-    public float[] color;
     public float[] normal;
     public int textureID;
     private float[][] textureCoords;
 
-    public QuadMesh(Vector3f pos, Vector3f dir, Vector3f c){
-        color = new float[]{c.x, c.y, c.z};
-        calculateCorners(pos, dir);
+    public QuadMesh(Vector3f pos, Vector3f dir, float size) {
+        calculateCorners(pos, dir, size);
+    }
+
+    public QuadMesh(Vector3f pos, Vector3f dir){
+        calculateCorners(pos, dir, 1);
     }
     
     public QuadMesh(Vector3f pos, Vector3f dir, int blockID) {
         this.textureID = TextureEngine.getTextureID(blockID, dir);
-        calculateCorners(pos, dir);
+        calculateCorners(pos, dir, 1);
     }
 
-    private void calculateCorners(Vector3f pos, Vector3f dir){
+    private void calculateCorners(Vector3f pos, Vector3f dir, float size){
         dir.normalize();
-        Vector3f side1 = new Vector3f().orthogonalize(dir).div(2);
-		Vector3f side2 = new Vector3f().orthogonalize(dir).cross(dir).div(2);
+        Vector3f side1 = new Vector3f().orthogonalize(dir).div(2).mul(size);
+		Vector3f side2 = new Vector3f().orthogonalize(dir).cross(dir).div(2).mul(size);
 		Vector3f corner = side1.add(side2).add(pos);
 		
 		for (int i = 0; i < 4; i++) { 
@@ -55,7 +57,6 @@ public class QuadMesh {
     }
 
     public void draw(){
-        if(color != null) glColor3fv(color);
         for (int i = 0; i < vertexData.length; i++) {
             glTexCoord2fv(textureCoords[i]);
             glVertex3fv(vertexData[i]);

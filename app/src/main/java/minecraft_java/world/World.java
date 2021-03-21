@@ -7,9 +7,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.joml.RoundingMode;
 import org.joml.Vector3f;
 import org.joml.Vector3i;
+import org.joml.Vector4f;
 
+import minecraft_java.App;
 import minecraft_java.entities.Player;
 
 public class World {
@@ -62,20 +65,36 @@ public class World {
     }
 
     public void raycastDestroyBlock(Vector3f pos, Vector3f dir){
-        System.out.println("Raycast destroy block, pos: " + pos + ", dir: " + dir);
+        setBlockFromWorldPos(raycast(pos, dir), 0);
+    }
+
+    private Vector3f raycast(Vector3f pos, Vector3f dir){
         Vector3i posL = worldToLocal(pos);
         float range = 10f;
-        float stepL = 0.1f;
+        float stepL = 0.01f;
         dir.normalize().mul(stepL);
-        for (int i = 0; i <= range/stepL; i++) {
+        for (int i = 0; i <= range / stepL; i++) {
             Vector3i nextL = worldToLocal(pos.add(dir));
-            if(!nextL.equals(posL)){
-                if(blockFromWorldPos(pos) != 0){
-                    setBlockFromWorldPos(pos, 0);
-                    return;
+            if (!nextL.equals(posL)) {
+                if (blockFromWorldPos(pos) != 0) {
+                    return pos;
                 }
             }
         }
+        return null;
+    }
+
+    public void highlightBlock(Vector3f pos, Vector3f dir) {
+        Vector3f hitPoint = raycast(pos, dir);
+        if(hitPoint == null) return;
+        App.drawBlock(hitPoint.round(), new Vector4f(1,0,0,0.5f), 1.1f);
+        // setBlockFromWorldPos(lastHighlightedBlockPos, lastHighlightedBlock);
+        // lastHighlightedBlockPos = null;
+        // Vector3f rc = raycast(pos, dir);
+        // if(rc == null) return;
+        // lastHighlightedBlock = blockFromWorldPos(rc);
+        // lastHighlightedBlockPos = rc;
+        // setBlockFromWorldPos(rc, 10);
     }
 
 
@@ -101,6 +120,7 @@ public class World {
     }
     
     public void setBlockFromWorldPos(Vector3f v, int blockType) {
+        if(v == null) return;
         Key k = keyFromWorldPos(v);
         Chunk c = chunks.get(k);
         if (c == null)
@@ -131,13 +151,13 @@ public class World {
 
 
     public Vector3i worldToLocal(Vector3f w) {
-        return worldToLocal(new Vector3i(w, 2));
+        return worldToLocal(new Vector3i(w, RoundingMode.HALF_UP));
     }
     public Vector3i worldToLocal(Vector3i w){
-        int x = w.x % 16;
-        int z = w.z % 16;
-        if(x < 0) x += 16;
-        if(z < 0) z += 16;
+        int x = w.x % chunkSize;
+        int z = w.z % chunkSize;
+        if(x < 0) x += chunkSize;
+        if(z < 0) z += chunkSize;
         return new Vector3i(x, w.y, z);
     }
     
@@ -206,4 +226,6 @@ public class World {
                 + (getLoadedChunksCount() + unloadedChunks.size()) * 16 * 16 * 64 * 4 / 1E6 + "MB\n" + "Meshdata: "
                 + (getLoadedChunksCount() + unloadedChunks.size()) * 500 * (12 + 16 * 16 * 3) * 4 / 1E6 + "MB");
     }
+
+
 }

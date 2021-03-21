@@ -8,6 +8,7 @@ import java.nio.IntBuffer;
 
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.*;
 
@@ -120,10 +121,16 @@ public class App {
 
 	private void update(){
 		handleKeyEvents();
-		drawBlock(0, 0, 0, new Vector3f(0.5f,0.5f,0.5f));
+		//drawBlock(0, 0, 0, new Vector3f(0.5f,0.5f,0.5f));
 		drawFog();
 		world.updateChunks(player);
 		world.draw();
+
+		world.highlightBlock(player.getPos(), player.getLookDir());
+
+		//App.drawLine(new Vector3f(0, 0, 0), new Vector3f(0,100,0));
+		//App.drawLine(player.getPos(), player.getLookDir().mul(7).add(player.getPos()));
+		/////App.drawBlock(player.getLookDir().mul(7).add(player.getPos()), new Vector4f(0,0,0, 0.5f));
 		//player.draw();
 		//System.out.println(player.getPos());
 		//System.out.println(world.worldToLocal(player.getPos()));
@@ -171,6 +178,8 @@ public class App {
 		if (keyDown[GLFW_KEY_LEFT_SHIFT])
 			player.move(player.DOWN);
 
+
+
 		if(keyDown[GLFW_KEY_U])
 			world.togglePlayerChunkVisible(player);
 		
@@ -181,15 +190,15 @@ public class App {
 		
 	}
 
-	public static void drawBlock(float x, float y, float z, Vector3f color){
-		Vector3f mid = new Vector3f(x, y, z);
+	public static void drawBlock(Vector3f mid, Vector4f c, float size){
 		Vector3f offset = new Vector3f(1, 0, 0);
 		Vector3f[] dirs = MeshEngine.getAllDir();
 		for (Vector3f dir : dirs) {
-			QuadMesh qd = new QuadMesh(new Vector3f(x+dir.x/2,y+dir.y/2,z+dir.z/2), dir, color);
+			QuadMesh qd = new QuadMesh(new Vector3f(mid.x+dir.x/2,mid.y+dir.y/2,mid.z+dir.z/2), dir, size);
 			glBegin(GL_QUADS);
-			
+				glColor4f(c.x, c.y, c.z, c.w);
 				qd.draw();
+				glColor3f(1,1,1);
 			glEnd();
 		}
 	}
@@ -199,6 +208,7 @@ public class App {
 			glColor3f(0, 0, 0);
 			glVertex3f(from.x, from.y, from.z);
 			glVertex3f(to.x, to.y, to.z);
+			glColor3f(1, 1, 1);
 		glEnd();
 	}
 

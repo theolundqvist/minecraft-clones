@@ -38,7 +38,7 @@ public class Player {
     public void setRot(Vector3f rot) {this.rot = rot;}
 
     public Vector3f getLookDir() {
-        return lookDir;
+        return new Vector3f(0, 0, 1).rotateX(-rot.x).rotateY(-rot.z).negate();
     }
 
     public void setLookDir(Vector3f lookDir) {
@@ -49,7 +49,7 @@ public class Player {
     public void setPos(Vector3f c){pos = c;}
     
     public void draw(){
-        App.drawBlock(pos.x, pos.y-2, pos.z, new Vector3f(0,0,0));
+        //App.drawBlock(pos.x, pos.y-2, pos.z, new Vector3f(0,0,0));
         //App.drawBlock(pos.x, pos.y+1, pos.z, new Vector3f(0, 0, 0));
     }
 
