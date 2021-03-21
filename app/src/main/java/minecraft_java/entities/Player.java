@@ -8,6 +8,9 @@ import minecraft_java.App;
 public class Player {
     private Vector3f pos;
     private Vector3f rot;
+
+    private Vector3f lookDir;
+
     private float movementSpeed = 5f;
 
     final public byte FORWARDS = 1;
@@ -31,15 +34,23 @@ public class Player {
 
     //GET/SET
 
-    public Vector3f getRot() {return rot;}
+    public Vector3f getRot() {return new Vector3f(rot);}
     public void setRot(Vector3f rot) {this.rot = rot;}
 
-    public Vector3f getPos(){return pos;}
+    public Vector3f getLookDir() {
+        return lookDir;
+    }
+
+    public void setLookDir(Vector3f lookDir) {
+        this.lookDir = lookDir;
+    }
+
+    public Vector3f getPos(){return new Vector3f(pos);}
     public void setPos(Vector3f c){pos = c;}
     
     public void draw(){
-        App.drawBlock(pos.x, pos.y, pos.z, new Vector3f(0,0,0));
-        App.drawBlock(pos.x, pos.y+1, pos.z, new Vector3f(0, 0, 0));
+        App.drawBlock(pos.x, pos.y-2, pos.z, new Vector3f(0,0,0));
+        //App.drawBlock(pos.x, pos.y+1, pos.z, new Vector3f(0, 0, 0));
     }
 
     Matrix4f mat = new Matrix4f();

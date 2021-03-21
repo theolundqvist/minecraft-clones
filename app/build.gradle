@@ -29,17 +29,15 @@ repositories {
     // Use JCenter for resolving dependencies.
     jcenter()
 	mavenCentral()
-	  maven {
-		url "https://oss.sonatype.org/content/repositories/snapshots/"
-	}
 	flatDir {
         dirs 'libs'
     }
+	  maven {
+		url "https://oss.sonatype.org/content/repositories/snapshots/"
+	}
 }
 project.ext.jomlVersion = "1.10.0"
 dependencies {
-
-
 
 	compile "org.joml:joml:${jomlVersion}"
 
@@ -55,7 +53,6 @@ dependencies {
     	implementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
 
 
-	implementation files('libs/TWL.jar')
 
 
 	implementation "org.lwjgl:lwjgl"
@@ -81,6 +78,7 @@ dependencies {
 	runtimeOnly "org.lwjgl:lwjgl-stb::$lwjglNatives"
 	if (lwjglNatives == "natives-macos") runtimeOnly "org.lwjgl:lwjgl-vulkan::$lwjglNatives"
 }
+
 
 application {
     // Define the main class for the application.

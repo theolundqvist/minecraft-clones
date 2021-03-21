@@ -20,7 +20,6 @@ import minecraft_java.world.*;
 TODO:
 
 WORLD
-* sammanfoga chunks, om chunken vid sidan inte finns, kör TerrainGenerator på den x,z koordinaten utan att spara värdet. men då fuckar träd upp?
 * ett block kan sparas som en enda byte
 * ta bort mesh från unloaded chunks när vi når ett visst antal
 * spara ändringar i en chunk kan man antingen spara hela chunken som den är eller bara ändringar; generera + ändringar
@@ -51,17 +50,14 @@ REFACTOR
 
 
 DONE
-<<<<<<< HEAD
-THEO - * refactor APP
-THEO - * change speed with scrollwheel
-THEO - * first person
-=======
 THEO - * texturer
 THEO - * dimma,
 THEO - * APP
 THEO - * change speed with scrollwheel,
 THEO - * first person, 
->>>>>>> main
+THEO - * destroy blocks? exakt nog?
+
+THEO/LUDVIG - * chunk borders
 
 LUDVIG - * ladda chunks i en cirkel
 
@@ -128,8 +124,13 @@ public class App {
 		drawFog();
 		world.updateChunks(player);
 		world.draw();
-
+		//player.draw();
+		//System.out.println(player.getPos());
+		//System.out.println(world.worldToLocal(player.getPos()));
+		//text(0, 0, 1f, 1f, 1f,1f, "hej");
 	}
+
+
 
 	private void drawFog(){
 		float playerHeight = player.getPos().y - world.getHeight() / 2;
@@ -170,6 +171,14 @@ public class App {
 		if (keyDown[GLFW_KEY_LEFT_SHIFT])
 			player.move(player.DOWN);
 
+		if(keyDown[GLFW_KEY_U])
+			world.togglePlayerChunkVisible(player);
+		
+		if(keyDown[GLFW_KEY_J])
+			world.removeTopBlockOnPos(player.getPos());
+		if (keyDown[GLFW_KEY_0])
+			world.raycastDestroyBlock(player.getPos(), player.getLookDir());
+		
 	}
 
 	public static void drawBlock(float x, float y, float z, Vector3f color){
@@ -183,6 +192,14 @@ public class App {
 				qd.draw();
 			glEnd();
 		}
+	}
+	public static void drawLine(Vector3f from, Vector3f to){
+		glLineWidth(5);
+		glBegin(GL_LINES);
+			glColor3f(0, 0, 0);
+			glVertex3f(from.x, from.y, from.z);
+			glVertex3f(to.x, to.y, to.z);
+		glEnd();
 	}
 
 
@@ -237,12 +254,12 @@ public class App {
 
 		while (!glfwWindowShouldClose(window)) {
 
-			render();
-
+			
 			glViewport(0, 0, width, height);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			
 			update();
+			render();
 			
 			glfwSwapBuffers(window);
 			glfwPollEvents();

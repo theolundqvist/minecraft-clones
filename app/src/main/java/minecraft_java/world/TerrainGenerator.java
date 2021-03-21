@@ -45,14 +45,14 @@ public final class TerrainGenerator {
         return heightMap;
     }
 
-    public static Chunk generateChunk(Key k, int chunkSize, int chunkHeight){
+    public static int[][][] generateBlocks(Chunk c){
 
-        lowestValue = chunkHeight/2 - amplitude;
+        lowestValue = c.height/2 - amplitude;
 
-        int[][] heightMap = generateChunkHeightMap(k, chunkSize);
+        int[][] heightMap = generateChunkHeightMap(c.key, c.size);
         
         //double[][][] map3D = generate3DMap(k, chunkSize, chunkHeight);
-        int[][][] blocks = new int[chunkSize][chunkHeight][chunkSize];
+        int[][][] blocks = new int[c.size][c.height][c.size];
         for (int x = 0; x < blocks.length; x++) {
             for (int y = 0; y < blocks[x].length; y++) {
                 for (int z = 0; z < blocks[x][y].length; z++) {
@@ -69,7 +69,7 @@ public final class TerrainGenerator {
             }
         }
 
-        return new Chunk(blocks, k, chunkSize);
+        return blocks;
 
     }
 

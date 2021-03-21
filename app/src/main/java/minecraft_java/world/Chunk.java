@@ -7,14 +7,17 @@ import minecraft_java.mesh.ChunkMesh;
 public class Chunk {
     private int[][][] blocks;
     public ChunkMesh mesh;
-    private Key pos;
-    private int size;
+    public Key key;
+    public int size;
     public World worldRef;
-    
-    public Chunk(int[][][] blocks, Key pos, int size) {
-        this.pos = pos;
-        this.size = size;
-        setBlocks(blocks);
+    public int height;
+
+    public Chunk(World world, Key k, int chunkSize, int chunkHeight) {
+        this.key = k;
+        this.worldRef = world;
+        this.size = chunkSize;
+        this.height = chunkHeight;
+        setBlocks(TerrainGenerator.generateBlocks(this));
     }
 
     public int getSize() {
@@ -22,7 +25,7 @@ public class Chunk {
     }
 
     public Key getKey() {
-        return pos;
+        return key;
     }
 
     public boolean hasMesh(){
@@ -34,11 +37,11 @@ public class Chunk {
     }
 
     public Vector3f getWorldOffset(){
-        return new Vector3f(pos.x * size - size/2, 0, pos.z * size - size/2);
+        return new Vector3f(key.x * size, 0, key.z * size);
     }
 
     public void draw(){
-        mesh.draw();
+        if(hasMesh()) mesh.draw();
     }
 
     public int[][][] getBlocks() {
