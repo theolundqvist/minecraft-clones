@@ -36,10 +36,10 @@ repositories {
 		url "https://oss.sonatype.org/content/repositories/snapshots/"
 	}
 }
-project.ext.jomlVersion = "1.10.0"
+project.ext.jomlVersion = "1.10.5"
 dependencies {
 
-	compile "org.joml:joml:${jomlVersion}"
+	// compile "org.joml:joml:${jomlVersion}"
 
     // Use JUnit Jupiter API for testing.
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
@@ -77,6 +77,7 @@ dependencies {
 	runtimeOnly "org.lwjgl:lwjgl-par::$lwjglNatives"
 	runtimeOnly "org.lwjgl:lwjgl-stb::$lwjglNatives"
 	if (lwjglNatives == "natives-macos") runtimeOnly "org.lwjgl:lwjgl-vulkan::$lwjglNatives"
+	implementation "org.joml:joml:${jomlVersion}"
 }
 
 
